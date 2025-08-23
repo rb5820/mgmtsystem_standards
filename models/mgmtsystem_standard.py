@@ -39,11 +39,19 @@ class MgmtSystemStandard(models.Model):
 
     #model should be extended from rds.base
     # This field links the standard to a specific RDS base, allowing for better integration with RDS models
-    rds_base_id = fields.Many2one(
-        'rds.base',
-        string="RDS Base",
-        help="Reference to the RDS base record"
-    )
+    # This model entry should be made in the rds module itself
+    # rds_base_id = fields.Char(
+    #     string="RDS Base ID",
+    #     help="Reference to the RDS base record identifier - will be converted to a relation field when RDS module is installed"
+    # )
+    
+    # RDS integration note - keep this comment for future reference
+    # When RDS module is installed, this field should be changed back to:
+    # rds_base_id = fields.Many2one(
+    #     'rds.base',
+    #     string="RDS Base",
+    #     help="Reference to the RDS base record"
+    # )
 
 
     code = fields.Char(
