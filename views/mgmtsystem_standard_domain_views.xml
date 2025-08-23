@@ -165,10 +165,10 @@
                 <field name="state"/>
                 <field name="color"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.state.raw_value == 'ineffective' ? 'oe_kanban_color_3' : ''} oe_kanban_color_#{kanban_color(record.color.raw_value)}">
                             <div class="o_dropdown_kanban dropdown">
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
@@ -189,7 +189,7 @@
                                     <span class="o_kanban_record_subtitle"><field name="standard_id"/></span>
                                 </div>
                                 <div>
-                                    <span class="badge badge-pill float-right mb4" t-attf-class="badge-#{record.state.raw_value == 'implemented' ? 'success' : (record.state.raw_value == 'draft' ? 'warning' : (record.state.raw_value == 'verified' ? 'info' : 'secondary'))}">
+                                    <span class="badge rounded-pill float-end mb-4" t-attf-class="bg-#{record.state.raw_value == 'implemented' ? 'success' : (record.state.raw_value == 'draft' ? 'warning' : (record.state.raw_value == 'verified' ? 'info' : 'secondary'))}">
                                         <field name="state"/>
                                     </span>
                                 </div>
