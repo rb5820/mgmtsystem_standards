@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Category for Management System - Standards -->
+        <record id="category_mgmtsystem_standard" model="ir.module.category">
+        <field name="name">Management System - Standards</field>
+        <field name="description">Management System - Standards</field>
+        <field name="sequence">10</field>
+        </record>   
+
+        <!-- Standard Groups -->
+        <!-- Basic Internal "Viewer" group R -->
+        <record id="group_standard_viewer" model="res.groups">
+            <field name="name">01. Standard Viewer</field>
+            <field name="category_id" ref="category_mgmtsystem_standard"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Users can view standard controls and test results.</field>
+        </record>
+        <!-- Basic Internal "User" group: CRU but no delete -->
+        <record id="group_standard_user" model="res.groups">
+            <field name="name">02. Standard User</field>
+            <field name="category_id" ref="category_mgmtsystem_standard"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Users can create and read standard results.</field>
+        </record>
+        <!-- Internal "tester" group: full CRUD -->
+        <record id="group_standard_tester" model="res.groups">
+            <field name="name">03. Standard Tester</field>
+            <field name="category_id" ref="category_mgmtsystem_standard"/>
+            <field name="implied_ids" eval="[(4, ref('group_standard_user'))]"/>
+            <field name="comment">Users can conduct control tests and submit for review.</field>
+        </record>
+        <!-- Internal "Reviewer" group: Can only review -->
+        <record id="group_standard_reviewer" model="res.groups">
+            <field name="name">04. Standard Controls Reviewer</field>
+            <field name="category_id" ref="category_mgmtsystem_standard"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Standard Controls Manager group: Full access to standard controls and tests -->
+        <record id="group_standard_manager" model="res.groups">
+            <field name="name">05.Standard Controls Manager</field>
+            <field name="category_id" ref="category_mgmtsystem_standard"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+
+    <data noupdate="1">
+        <!-- Record Rules -->
+        <!-- <record id="rule_control_test_tester" model="ir.rule">
+            <field name="name">Standard Control Test: Testers see own tests</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_control_test"/>
+            <field name="domain_force">[('tester_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_standard_tester'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rule_control_test_reviewer" model="ir.rule">
+            <field name="name">Standard Control Test: Reviewers see all tests</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_control_test"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_standard_reviewer'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rule_control_test_manager" model="ir.rule">
+            <field name="name">Standard Control Test: Managers full access</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_control_test"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_standard_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record> -->
+
+        <!-- KPI Access Rules -->
+        <!-- <record id="rule_standard_kpi_reviewer" model="ir.rule">
+            <field name="name">Standard KPI: Reviewers read-only access</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_kpi"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_standard_reviewer'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rule_standard_kpi_manager" model="ir.rule">
+            <field name="name">Standard KPI: Managers full access</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_kpi"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_standard_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data> -->
+</odoo>

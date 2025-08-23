@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Form View -->
+    <record id="view_mgmtsystem_standard_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.form</field>
+        <field name="model">mgmtsystem.standard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': true}" 
+                           statusbar_visible="draft,active,superseded,withdrawn"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+                    <field name="color" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <h2>
+                            <field name="title" />
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="parent_id" />
+                            <field name="category_id"/>
+                            <field name="standard_type"/>
+                            <field name="issuing_body"/>
+                            <field name="version"/>
+                            <field name="documentation_url" widget="url" placeholder="e.g. https://www.iso.org/iso-27001-information-security.html"/>
+                            <field name="internal_documentation_url" widget="url" placeholder="e.g. https://www.iso.org/iso-27001-information-security.html"/>
+                            <field name="internal_documentation_file" filename="documentation_filename" widget="binary"/>
+                        </group>
+                        <group>
+                            <field name="publication_date"/>
+                            <field name="effective_date"/>
+                            <field name="expiry_date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="code" string="Standard Code" placeholder="e.g. ISO 9001:2015" readonly="1"/>
+                            <field name="last_assessment_date"/>
+                            <field name="next_assessment_date"/>
+                            <field name="control_count"/>
+                            <field name="implemented_control_count"/>
+                            <field name="compliance_score" widget="percentpie"/>
+                            <field name="parent_left"/>
+                            <field name="parent_right"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Add detailed description here..."/>
+                        </page>
+                        <page string="Standard domains">
+                            <field name="domain_ids">
+                                <list                                
+                                decoration-warning="state == 'draft'"
+                                decoration-info="state in ['review', 'implementing']"
+                                decoration-success="state == 'approved'"
+                                decoration-primary="state == 'implementing'"
+                                decoration-muted="state in ['retired', 'ineffective']">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="standard_id" optional="hide"/>
+                                    <field name="name" />
+                                    <field name="description"/>
+                                    <field name="reference"/>
+                                    <field name="control_count"/>
+                                    <field name="implemented_control_count"/>
+                                    <field name="state"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Scope">
+                            <field name="scope" placeholder="Specify the scope of application..."/>
+                        </page>
+                        <page string="Requirements">
+                            <field name="requirement_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="compliance_status"/>
+                                    <field name="responsible_id"/>
+                                    <field name="priority" widget="priority"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="datas" filename="name" widget="binary"/>
+                                    <field name="create_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Products">
+                            <field name="all_product_ids">
+                                <list>
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Superseded Information" invisible="state != 'superseded'">
+                            <group>
+                                <field name="superseded_by_id" required="state == 'superseded'"/>
+                            </group>
+                            <div class="oe_clear"/>
+                            <separator string="Standards Superseded by This Standard"/>
+                            <field name="supersedes_ids" readonly="1">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        
+                        <page string="🛡️ Allowed Companies" name="allowed_companies">
+                          <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Standard List View -->
+    <record id="view_mgmtsystem_standard_list" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.list</field>
+        <field name="model">mgmtsystem.standard</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'withdrawn'" decoration-bf="state == 'active'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="title"/>
+                <field name="issuing_body"/>
+                <field name="version"/>
+                <field name="category_id"/>
+                <field name="standard_type"/>
+                <field name="effective_date"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Standard Search View -->
+    <record id="view_mgmtsystem_standard_search" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.search</field>
+        <field name="model">mgmtsystem.standard</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category_id"/>
+                <field name="standard_type"/>
+                <field name="issuing_body"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Active" name="active_state" domain="[('state', '=', 'active')]"/>
+                <filter string="Superseded" name="superseded" domain="[('state', '=', 'superseded')]"/>
+                <filter string="Withdrawn" name="withdrawn" domain="[('state', '=', 'withdrawn')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="group_by_category" domain="[]" context="{'group_by': 'category_id'}"/>
+                    <filter string="Type" name="group_by_type" domain="[]" context="{'group_by': 'standard_type'}"/>
+                    <filter string="Issuing Body" name="group_by_issuing_body" domain="[]" context="{'group_by': 'issuing_body'}"/>
+                    <filter string="Status" name="group_by_state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Standard Kanban View -->
+    <record id="view_mgmtsystem_standard_kanban" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.kanban</field>
+        <field name="model">mgmtsystem.standard</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="standard_type">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="standard_type"/>
+                <field name="state"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.state.raw_value == 'withdrawn' ? 'oe_kanban_color_3' : ''} oe_kanban_color_#{kanban_color(record.color.raw_value)}">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <i class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a t-if="widget.editable" role="button" type="edit" class="dropdown-item">Edit</a>
+                                    <a t-if="widget.deletable" role="button" type="delete" class="dropdown-item">Delete</a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <group>
+                                    <div>
+                                        <field name="code"/>
+                                    </div>
+                                    <div>
+                                        <field name="version"/>
+                                    </div>
+                                </group>
+                                <div>
+                                    <field name="title"/>
+                                </div>
+                                <div>
+                                    <field name="category_id"/>
+                                </div>
+                                <div class="text-muted">
+                                    <span class="o_kanban_record_subtitle"><field name="standard_type"/></span>
+                                </div>
+                                <div>
+                                    <span class="badge float-end" t-attf-class="badge text-bg-#{record.state.raw_value == 'active' ? 'success' : (record.state.raw_value == 'draft' ? 'warning' : (record.state.raw_value == 'superseded' ? 'info' : 'danger'))}">
+                                        <field name="state"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Standard Action Window -->
+    <record id="action_mgmtsystem_standard" model="ir.actions.act_window">
+        <field name="name">Standards</field>
+        <field name="res_model">mgmtsystem.standard</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_mgmtsystem_standard_search"/>
+        <field name="context">{"search_default_active_state": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Management System Standard
+            </p>
+            <p>
+                Standards are official documents that define requirements, specifications,
+                guidelines, or characteristics for products, services, or management systems.
+                Create records for standards like ISO 9001, ISO 14001, etc.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_mgmtsystem_standards_root"
+              name="Standards"
+              parent="mgmtsystem.menu_mgmtsystem_root"
+              sequence="30"/>
+
+    <menuitem id="menu_mgmtsystem_standards"
+              name="Standards"
+              parent="menu_mgmtsystem_standards_root"
+              action="action_mgmtsystem_standard"
+              sequence="10"/>
+</odoo>

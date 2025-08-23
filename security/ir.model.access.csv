@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mgmtsystem_standard_user,mgmtsystem.standard.user,model_mgmtsystem_standard,base.group_user,1,0,0,0
+access_mgmtsystem_standard_manager,mgmtsystem.standard.manager,model_mgmtsystem_standard,base.group_system,1,1,1,1
+access_mgmtsystem_standard_category_user,mgmtsystem.standard.category.user,model_mgmtsystem_standard_category,base.group_user,1,0,0,0
+access_mgmtsystem_standard_category_manager,mgmtsystem.standard.category.manager,model_mgmtsystem_standard_category,base.group_system,1,1,1,1
+access_mgmtsystem_standard_requirement_user,mgmtsystem.standard.requirement.user,model_mgmtsystem_standard_requirement,base.group_user,1,0,0,0
+access_mgmtsystem_standard_requirement_manager,mgmtsystem.standard.requirement.manager,model_mgmtsystem_standard_requirement,base.group_system,1,1,1,1
+access_mgmtsystem_standard_audit_question_user,mgmtsystem.standard.audit.question.user,model_mgmtsystem_standard_audit_question,base.group_user,1,0,0,0
+access_mgmtsystem_standard_audit_question_manager,mgmtsystem.standard.audit.question.manager,model_mgmtsystem_standard_audit_question,base.group_system,1,1,1,1
+access_mgmtsystem_standard_control_user,mgmtsystem.standard.control.user,model_mgmtsystem_standard_control,base.group_user,1,0,0,0
+access_mgmtsystem_standard_control_manager,mgmtsystem.standard.control.manager,model_mgmtsystem_standard_control,base.group_system,1,1,1,1
+access_mgmtsystem_standard_domain_user,mgmtsystem.standard.domain.user,model_mgmtsystem_standard_domain,base.group_user,1,0,0,0
+access_mgmtsystem_standard_domain_manager,mgmtsystem.standard.domain.manager,model_mgmtsystem_standard_domain,base.group_system,1,1,1,1
+access_mgmtsystem_standard_control_assessment_tool_user,mgmtsystem.standard.control.assessment.tool.user,model_mgmtsystem_standard_control_assessment_tool,base.group_user,1,1,1,1

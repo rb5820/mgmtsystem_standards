@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Control Form View -->
+    <record id="view_mgmtsystem_standard_control_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.control.form</field>
+        <field name="model">mgmtsystem.standard.control</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,review,approved,implementing,implemented,verified"/>
+                    <!-- Buttons temporarily disabled to fix compatibility issues
+                    <button name="action_submit_review" type="object" string="Submit for Review" 
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve" 
+                            invisible="state != 'review'"/>
+                    <button name="action_start_implementation" type="object" string="Start Implementation" 
+                            invisible="state != 'approved'"/>
+                    <button name="action_mark_implemented" type="object" string="Mark as Implemented" 
+                            invisible="state != 'implementing'"/>
+                    <button name="action_start_testing" type="object" string="Start Testing" 
+                            invisible="state not in ['implemented', 'ineffective']"/>
+                    <button name="action_mark_verified" type="object" string="Verify" 
+                            invisible="state != 'testing'"/>
+                    <button name="action_mark_ineffective" type="object" string="Mark as Ineffective" 
+                            invisible="state not in ['implemented', 'verified', 'testing']"/>
+                    <button name="action_retire" type="object" string="Retire Control" 
+                            invisible="state not in ['implemented', 'verified', 'ineffective']"/>
+                    -->
+
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference"/>
+                        </h1>
+                        <h2>
+                            <field name="name" />
+                        </h2>
+                    </div>
+
+
+                    <group>
+                        <group>
+                            <field name="standard_id"/>
+                            <field name="domain_id"/>
+                            <field name="control_type"/>
+                            <field name="priority"/>
+                            <field name="is_required"/>
+                        </group>
+                        <group>
+                            <field name="control_owner_id"/>
+                            <field name="owner_id"/>
+                            <field name="effectiveness_score" widget="progressbar"/>
+                            <field name="implemented"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Add detailed description here..."/>
+                        </page>
+                        <page string="Implementation">
+                            <group>
+                            <field name="rationale"/>
+                            <field name="impact"/>
+                            <field name="remediation"/>
+                            <field name="implementation_details" placeholder="Details on how the control is implemented..."/>
+                            </group>
+                        </page>
+                        <page string="Test Procedure">
+                            <group>
+                                <field name="audit"/>
+                                <field name="test_frequency"/>
+                                <field name="test_procedure" placeholder="Details on how the control is tested..."/>
+                                <field name="last_test_date"/>
+                                <field name="next_test_date" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Additional Information">
+                            <field name="additional_information" placeholder="Add any additional information..."/>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="datas" filename="name" widget="binary"/>
+                                    <field name="create_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cost Information">
+                            <group>
+                                <group>
+                                    <field name="implementation_time"/>
+                                    <field name="maintenance_time"/>
+                                </group>
+                                <group>
+                                    <field name="implementation_cost"/>
+                                    <field name="maintenance_cost"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Automated Assessment">
+                            <group>
+                                <field name="automated_assessment"/>
+
+                                <field name="assessment_tools"/>
+                                <field name="last_automated_check" invisible="not automated_assessment"/>
+                                <field name="automated_check_result" invisible="not automated_assessment"/>
+                            </group>
+                        </page>
+                        <page string="Tracking Information">
+                            <group>
+                                <group string="Dates">
+                                    <field name="approval_date"/>
+                                    <field name="implementation_date"/>
+                                    <field name="verification_date"/>
+                                    <field name="retirement_date"/>
+                                    <field name="last_assessment_date"/>
+                                </group>
+                                <group string="Responsible Persons">
+                                    <field name="approver_id"/>
+                                    <field name="verifier_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Standard Control List View -->
+    <record id="view_mgmtsystem_standard_control_tree" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.control.tree</field>
+        <field name="model">mgmtsystem.standard.control</field>
+        <field name="arch" type="xml">
+            <list 
+                decoration-muted="state == 'retired'" 
+                decoration-danger="state == 'review'" 
+                decoration-success="state == 'verified'" 
+                decoration-primary="state == 'implementing'">
+                <!-- Visible fields -->
+                <field name="reference" optional="hide"/>
+                <field name="name"/>
+                <field name="standard_id"/>
+                <field name="domain_id"/>
+                <field name="control_type"/>
+                <field name="priority"/>
+                <field name="effectiveness_score" widget="progressbar"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                
+                <!-- Invisible fields for filtering and export -->
+                <field name="code" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="implemented" optional="hide"/>
+                <field name="asset_class" optional="hide"/>
+                <field name="is_required" optional="hide"/>
+                <field name="implementation_date" optional="hide"/>
+                <field name="verification_date" optional="hide"/>
+                <field name="control_owner_id" optional="hide"/>
+                <field name="owner_id" optional="hide"/>
+                <field name="last_test_date" optional="hide"/>
+                <field name="next_test_date" optional="hide"/>
+                <field name="implementation_time" optional="hide"/>
+                <field name="implementation_cost" optional="hide"/>
+                <field name="automated_assessment" optional="hide"/>
+                <field name="last_automated_check" optional="hide"/>
+                <field name="automated_check_result" optional="hide"/>
+                <field name="test_frequency" optional="hide"/>
+                <field name="description" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Standard Control Search View -->
+    <record id="view_mgmtsystem_standard_control_search" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.control.search</field>
+        <field name="model">mgmtsystem.standard.control</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="standard_id"/>
+                <field name="domain_id"/>
+                <field name="control_type"/>
+                <field name="description"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="Required Controls" name="required" domain="[('is_required', '=', True)]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Under Review" name="review" domain="[('state', '=', 'review')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Implementing" name="implementing" domain="[('state', '=', 'implementing')]"/>
+                <filter string="Implemented" name="implemented" domain="[('state', '=', 'implemented')]"/>
+                <filter string="Verified" name="verified" domain="[('state', '=', 'verified')]"/>
+                <filter string="Ineffective" name="ineffective" domain="[('state', '=', 'ineffective')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Standard" name="group_by_standard" domain="[]" context="{'group_by': 'standard_id'}"/>
+                    <filter string="Domain" name="group_by_domain" domain="[]" context="{'group_by': 'domain_id'}"/>
+                    <filter string="Control Type" name="group_by_type" domain="[]" context="{'group_by': 'control_type'}"/>
+                    <filter string="Priority" name="group_by_priority" domain="[]" context="{'group_by': 'priority'}"/>
+                    <filter string="Status" name="group_by_state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Standard Control Kanban View -->
+    <record id="view_mgmtsystem_standard_control_kanban" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.control.kanban</field>
+        <field name="model">mgmtsystem.standard.control</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="standard_id"/>
+                <field name="domain_id"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <i class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a t-if="widget.editable" role="button" type="edit" class="dropdown-item">Edit</a>
+                                    <a t-if="widget.deletable" role="button" type="delete" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <strong><field name="reference"/></strong>
+                                </div>
+                                <div>
+                                    <field name="name"/>
+                                </div>
+                                <div class="text-muted">
+                                    <span class="o_kanban_record_subtitle"><field name="standard_id"/></span>
+                                </div>
+                                <div>
+                                    <span t-if="record.priority.raw_value === 'high'" class="badge text-bg-danger float-end">High</span>
+                                    <span t-if="record.priority.raw_value === 'medium'" class="badge text-bg-warning float-end">Medium</span>
+                                    <span t-if="record.priority.raw_value === 'low'" class="badge text-bg-info float-end">Low</span>
+                                </div>
+                                <div>
+                                    <span class="badge float-end" t-attf-class="badge text-bg-#{record.state.raw_value == 'verified' ? 'success' : (record.state.raw_value == 'ineffective' ? 'danger' : (record.state.raw_value == 'implemented' ? 'info' : 'secondary'))}">
+                                        <field name="state"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Standard Control Action Window -->
+    <record id="action_mgmtsystem_standard_control" model="ir.actions.act_window">
+        <field name="name">Standard Controls</field>
+        <field name="res_model">mgmtsystem.standard.control</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="search_view_id" ref="view_mgmtsystem_standard_control_search"/>
+        <field name="context">{"search_default_active": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Standard Control
+            </p>
+            <p>
+                Controls are specific measures that implement requirements defined in standards.
+                They represent concrete actions or safeguards put in place to meet standard requirements.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_mgmtsystem_standard_controls"
+              name="Controls"
+              parent="menu_mgmtsystem_standards_root"
+              action="action_mgmtsystem_standard_control"
+              sequence="40"/>
+    
+
+    <!-- Report Menu Item -->   
+    
+    <menuitem id="menu_report_standard_control"
+        name="Standard Control Report"
+        parent="menu_mgmtsystem_standards_root"
+        action="action_report_standard_control"
+        sequence="50"/>
+
+
+    
+
+</odoo>

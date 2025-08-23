@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Risk Matrix Report Layout -->
+    <template id="risk_matrix_layout" name="Management System Risk Matrix Layout">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="docs[0]" t-if="docs"/>
+                <div class="page">
+                    <!-- Report content will go here -->
+                    <t t-out="0"/>
+                </div>
+            </t>
+        </t>
+    </template>
+    
+    <!-- Custom Footer for Risk Matrix Reports -->
+    <template id="risk_matrix_footer_layout" name="Risk Matrix Footer Layout" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@class, 'footer')]" position="replace">
+            <div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}">
+                <div class="o_footer_content d-flex border-top pt-2">
+                    <div class="text-end text-muted w-100">
+                        Page <span class="page"/> of <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

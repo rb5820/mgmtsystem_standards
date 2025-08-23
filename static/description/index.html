@@ -1,0 +1,354 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management System Standards - Module Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #875A7B;
+            border-bottom: 1px solid #875A7B;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #875A7B;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #666;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .feature {
+            background-color: #f9f9f9;
+            border-left: 4px solid #875A7B;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .feature h4 {
+            margin-top: 0;
+            color: #875A7B;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #875A7B;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .screenshot {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        .note {
+            background-color: #e2f0ff;
+            border-left: 4px solid #428bca;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .warning {
+            background-color: #fcf8e3;
+            border-left: 4px solid #f0ad4e;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Management System Standards Module</h1>
+    
+    <div class="section">
+        <h2>Overview</h2>
+        <p>
+            The Management System Standards module extends Odoo's Management System application with comprehensive
+            capabilities for managing standards, requirements, and compliance tracking. This module is particularly
+            useful for organizations implementing management systems according to ISO standards or other regulatory
+            frameworks.
+        </p>
+    </div>
+    
+    <div class="section">
+        <h2>Key Features</h2>
+        
+        <div class="feature">
+            <h4>Standards Management</h4>
+            <p>Create and manage standards with detailed information including code, version, publication date, and status.</p>
+        </div>
+        
+        <div class="feature">
+            <h4>Hierarchical Categories</h4>
+            <p>Organize standards into logical categories with parent-child relationships for better organization.</p>
+        </div>
+        
+        <div class="feature">
+            <h4>Requirements Tracking</h4>
+            <p>Track individual clauses and requirements within standards, with support for hierarchical structures.</p>
+        </div>
+        
+        <div class="feature">
+            <h4>Compliance Status Monitoring</h4>
+            <p>Monitor and update compliance status for each requirement (compliant, partially compliant, non-compliant).</p>
+        </div>
+        
+        <div class="feature">
+            <h4>Audit Questions</h4>
+            <p>Define audit questions to verify compliance with each requirement during assessments.</p>
+        </div>
+        
+        <div class="feature">
+            <h4>Evidence Management</h4>
+            <p>Link documents and evidence to standards and requirements for compliance documentation.</p>
+        </div>
+        
+        <div class="feature">
+            <h4>Version Tracking</h4>
+            <p>Track standard versions and manage superseded standards over time.</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Data Model</h2>
+        
+        <h3>Standards</h3>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>Char</td>
+                <td>Name of the standard</td>
+            </tr>
+            <tr>
+                <td>code</td>
+                <td>Char</td>
+                <td>Code/reference of the standard (e.g., ISO 9001:2015)</td>
+            </tr>
+            <tr>
+                <td>version</td>
+                <td>Char</td>
+                <td>Version or edition of the standard</td>
+            </tr>
+            <tr>
+                <td>description</td>
+                <td>Text</td>
+                <td>Description of the standard</td>
+            </tr>
+            <tr>
+                <td>scope</td>
+                <td>Text</td>
+                <td>Scope of application</td>
+            </tr>
+            <tr>
+                <td>publication_date</td>
+                <td>Date</td>
+                <td>When the standard was published</td>
+            </tr>
+            <tr>
+                <td>effective_date</td>
+                <td>Date</td>
+                <td>When the standard became effective</td>
+            </tr>
+            <tr>
+                <td>expiry_date</td>
+                <td>Date</td>
+                <td>When the standard will expire</td>
+            </tr>
+            <tr>
+                <td>standard_type</td>
+                <td>Selection</td>
+                <td>Type of standard (quality, security, etc.)</td>
+            </tr>
+            <tr>
+                <td>state</td>
+                <td>Selection</td>
+                <td>Status (draft, active, superseded, withdrawn)</td>
+            </tr>
+        </table>
+        
+        <h3>Standard Categories</h3>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>Char</td>
+                <td>Name of the category</td>
+            </tr>
+            <tr>
+                <td>description</td>
+                <td>Text</td>
+                <td>Description of the category</td>
+            </tr>
+            <tr>
+                <td>parent_id</td>
+                <td>Many2one</td>
+                <td>Parent category (for hierarchy)</td>
+            </tr>
+            <tr>
+                <td>complete_name</td>
+                <td>Char</td>
+                <td>Complete hierarchical name</td>
+            </tr>
+        </table>
+        
+        <h3>Requirements</h3>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>Char</td>
+                <td>Name of the requirement</td>
+            </tr>
+            <tr>
+                <td>code</td>
+                <td>Char</td>
+                <td>Clause number (e.g., 4.1)</td>
+            </tr>
+            <tr>
+                <td>description</td>
+                <td>Text</td>
+                <td>Requirement description</td>
+            </tr>
+            <tr>
+                <td>standard_id</td>
+                <td>Many2one</td>
+                <td>Related standard</td>
+            </tr>
+            <tr>
+                <td>parent_id</td>
+                <td>Many2one</td>
+                <td>Parent requirement (for hierarchy)</td>
+            </tr>
+            <tr>
+                <td>compliance_status</td>
+                <td>Selection</td>
+                <td>Current compliance status</td>
+            </tr>
+            <tr>
+                <td>complete_code</td>
+                <td>Char</td>
+                <td>Complete hierarchical code</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Implementation Guide</h2>
+        
+        <h3>Installation</h3>
+        <ol>
+            <li>Copy the module to your Odoo addons directory</li>
+            <li>Update the apps list in Odoo</li>
+            <li>Find and install "Management System Standards"</li>
+            <li>Verify that all dependencies are installed</li>
+        </ol>
+        
+        <h3>Configuration</h3>
+        <ol>
+            <li>Define standard categories</li>
+            <li>Create standards relevant to your organization</li>
+            <li>Define requirements within each standard</li>
+            <li>Create audit questions for requirements</li>
+        </ol>
+        
+        <div class="note">
+            <p><strong>Note:</strong> Be sure to configure user access rights for standards management.</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Integration with Other Modules</h2>
+        
+        <h3>Management System</h3>
+        <p>
+            The Standards module is fully integrated with the Management System module, 
+            adding menu items under the main Management System menu.
+        </p>
+        
+        <h3>Document Management</h3>
+        <p>
+            Standards and requirements can link to documents through the document_page module.
+        </p>
+        
+        <h3>Future Integrations</h3>
+        <ul>
+            <li>Integration with audit findings</li>
+            <li>Connection to nonconformity management</li>
+            <li>Compliance reporting</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>Technical Information</h2>
+        
+        <h3>Dependencies</h3>
+        <ul>
+            <li>base</li>
+            <li>mail</li>
+            <li>mgmtsystem</li>
+            <li>document_page</li>
+        </ul>
+        
+        <h3>Security</h3>
+        <p>
+            The module defines access rights for:
+        </p>
+        <ul>
+            <li>Regular users (read-only access)</li>
+            <li>Management system managers (full access)</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>Support</h2>
+        <p>
+            For technical issues or questions, contact:
+        </p>
+        <ul>
+            <li>Email: support@equans.com</li>
+            <li>Website: https://www.equans.com</li>
+        </ul>
+        
+        <div class="warning">
+            <p>
+                <strong>Important:</strong> Always test module updates in a non-production environment before deploying to production.
+            </p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 EQUANS. All rights reserved.</p>
+    </footer>
+</body>
+</html>

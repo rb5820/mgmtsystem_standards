@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Categories -->
+    <record id="standard_category_quality" model="mgmtsystem.standard.category">
+        <field name="name">Quality Management</field>
+        <field name="description">Standards related to quality management systems and practices.</field>
+    </record>
+
+    <record id="standard_category_environment" model="mgmtsystem.standard.category">
+        <field name="name">Environmental Management</field>
+        <field name="description">Standards related to environmental management and sustainability.</field>
+    </record>
+
+    <record id="standard_category_security" model="mgmtsystem.standard.category">
+        <field name="name">Information Security</field>
+        <field name="description">Standards related to information security management.</field>
+    </record>
+
+    <record id="standard_category_safety" model="mgmtsystem.standard.category">
+        <field name="name">Health and Safety</field>
+        <field name="description">Standards related to occupational health and safety.</field>
+    </record>
+
+    <record id="standard_category_energy" model="mgmtsystem.standard.category">
+        <field name="name">Energy Management</field>
+        <field name="description">Standards related to energy management and efficiency.</field>
+    </record>
+
+    <!-- Standards ISO 9001 -->
+    <record id="standard_iso_9001" model="mgmtsystem.standard">
+        <field name="name">ISO 9001</field>
+        <field name="title">Quality Management Systems</field>
+        <field name="code">ISO 9001:2015</field>
+        <field name="version">2015</field>
+        <field name="standard_type">quality</field>
+        <field name="category_id" ref="standard_category_quality"/>
+        <field name="issuing_body">ISO</field>
+        <field name="publication_date">2015-09-15</field>
+        <field name="effective_date">2015-09-15</field>
+        <field name="description">ISO 9001:2015 specifies requirements for a quality management system when an organization needs to demonstrate its ability to consistently provide products and services that meet customer and applicable statutory and regulatory requirements, and aims to enhance customer satisfaction through the effective application of the system.</field>
+        <field name="state">active</field>
+    </record>
+    <!-- Standard ISO 14001 -->
+    <record id="standard_iso_14001" model="mgmtsystem.standard">
+        <field name="name">ISO 14001</field>
+        <field name="title">Environmental Management Systems</field>
+        <field name="code">ISO 14001:2015</field>
+        <field name="version">2015</field>
+        <field name="standard_type">environmental</field>
+        <field name="category_id" ref="standard_category_environment"/>
+        <field name="issuing_body">ISO</field>
+        <field name="publication_date">2015-09-15</field>
+        <field name="effective_date">2015-09-15</field>
+        <field name="description">ISO 14001:2015 specifies the requirements for an environmental management system that an organization can use to enhance its environmental performance. It is intended for use by an organization seeking to manage its environmental responsibilities in a systematic manner that contributes to the environmental pillar of sustainability.</field>
+        <field name="state">active</field>
+    </record>
+    <!-- Standard ISO 27001 -->
+    <record id="standard_iso_27001" model="mgmtsystem.standard">
+        <field name="name">ISO/IEC 27001</field>
+        <field name="title">Information Security Management Systems</field>
+        <field name="code">ISO/IEC 27001:2022</field>
+        <field name="version">2022</field>
+        <field name="standard_type">security</field>
+        <field name="category_id" ref="standard_category_security"/>
+        <field name="issuing_body">ISO/IEC</field>
+        <field name="publication_date">2022-10-25</field>
+        <field name="effective_date">2022-10-25</field>
+        <field name="description">ISO/IEC 27001:2022 specifies the requirements for establishing, implementing, maintaining and continually improving an information security management system within the context of the organization. It also includes requirements for the assessment and treatment of information security risks tailored to the needs of the organization.</field>
+        <field name="state">active</field>
+    </record>
+
+    <!-- Standard VGB-B-105E 2010-->
+    <record id="standard_vgb_b_105e" model="mgmtsystem.standard">
+        <field name="name">VGB-B-105E</field>
+        <field name="title">Identification System for Power Plants</field>
+        <field name="code">VGB-B-105E</field>
+        <field name="version">2010</field>
+        <field name="standard_type">energy</field>
+        <field name="category_id" ref="standard_category_energy"/>
+        <field name="issuing_body">VGB PowerTech</field>
+        <field name="publication_date">2022-01-15</field>
+        <field name="effective_date">2022-01-15</field>
+        <field name="description">The Identification System for Power Stations KKS serves to identify plants, sections of plants and items of equipment in any type of power station according to task, type and location. It is to be used by all engineering disciplines for planning, licensing, construction, operation and maintenance.</field>
+        <field name="state">active</field>
+    </record>
+
+    <!-- Standard VGB-S-811-01-2018-01 2018-->
+    <record id="standard_vgb_s_811" model="mgmtsystem.standard">
+        <field name="name">VGB-S-811-01-2018-01</field>
+        <field name="title">VGB Standard for KKS Identification System for Power Stations - 8th revised</field>
+        <field name="version">2018</field>
+        <field name="description">VGB-S-811-01-2018-01 provides a framework for the standardization process.</field>
+        <field name="code">VGB-S-811-01-2018-01</field>
+        <field name="standard_type">energy</field>
+        <field name="category_id" ref="standard_category_energy"/>
+        <field name="issuing_body">VGB PowerTech</field>
+        <field name="publication_date">2018-01-15</field>
+        <field name="effective_date">2018-01-15</field>
+        <field name="state">active</field>
+    </record>
+    
+    <!-- example domain for VGB-S-811-01-2018-01 2018-->
+    <record id="domain_vgb_s_811_01" model="mgmtsystem.standard.domain">
+        <field name="name">1. Introduction</field>
+        <field name="title">Purpose of the Present Guidelines, Scope of Application, Main Features of the KKS</field>
+        <field name="reference">section 1</field>
+        <field name="description">This section provides an overview of the purpose of the KKS Identification System, its scope of application, and the main features that distinguish it from other identification systems.</field>
+        <field name="standard_id" ref="standard_vgb_s_811"/>
+        <field name="state">draft</field>
+    </record>
+
+    <!-- example domain for VGB-S-811-01-2018-01 2018-->
+    <record id="domain_vgb_s_811_02" model="mgmtsystem.standard.domain">
+        <field name="name">2. Structure of the KKS Identification System</field>
+        <field name="title">Structure of the KKS Identification System</field>
+        <field name="reference">section 2</field>
+        <field name="description">Types of Code and Breakdown Levels, Prefix Symbols and Breakdown Symbols for Types of Code, and General Format of the Code.</field>
+        <field name="standard_id" ref="standard_vgb_s_811"/>
+        <field name="state">draft</field>
+    </record>
+
+    <!-- Example Requirements for ISO 9001 -->
+    <record id="requirement_iso_9001_4" model="mgmtsystem.standard.requirement">
+        <field name="name">Context of the Organization</field>
+        <field name="code">4</field>
+        <field name="standard_id" ref="standard_iso_9001"/>
+        <field name="description">The organization shall determine external and internal issues that are relevant to its purpose and its strategic direction and that affect its ability to achieve the intended result(s) of its quality management system.</field>
+    </record>
+
+    <record id="requirement_iso_9001_4_1" model="mgmtsystem.standard.requirement">
+        <field name="name">Understanding the organization and its context</field>
+        <field name="code">1</field>
+        <field name="parent_id" ref="requirement_iso_9001_4"/>
+        <field name="standard_id" ref="standard_iso_9001"/>
+        <field name="description">The organization shall determine external and internal issues that are relevant to its purpose and its strategic direction and that affect its ability to achieve the intended result(s) of its quality management system.</field>
+    </record>
+
+    <record id="requirement_iso_9001_4_2" model="mgmtsystem.standard.requirement">
+        <field name="name">Understanding the needs and expectations of interested parties</field>
+        <field name="code">2</field>
+        <field name="parent_id" ref="requirement_iso_9001_4"/>
+        <field name="standard_id" ref="standard_iso_9001"/>
+        <field name="description">Due to their effect or potential effect on the organization's ability to consistently provide products and services that meet customer and applicable statutory and regulatory requirements, the organization shall determine: a) the interested parties that are relevant to the quality management system; b) the requirements of these interested parties that are relevant to the quality management system.</field>
+    </record>
+
+    <!-- Example Audit Question -->
+    <record id="audit_question_iso_9001_4_1_1" model="mgmtsystem.standard.audit.question">
+        <field name="name">Has the organization determined external and internal issues relevant to its purpose and strategic direction?</field>
+        <field name="requirement_id" ref="requirement_iso_9001_4_1"/>
+        <field name="expected_evidence">Documentation showing analysis of internal and external factors (e.g., SWOT analysis, business context document)</field>
+    </record>
+
+    <record id="audit_question_iso_9001_4_1_2" model="mgmtsystem.standard.audit.question">
+        <field name="name">Is there evidence that the organization monitors and reviews information about these external and internal issues?</field>
+        <field name="requirement_id" ref="requirement_iso_9001_4_1"/>
+        <field name="expected_evidence">Minutes of management review meetings, updates to context analysis</field>
+    </record>
+
+</odoo>

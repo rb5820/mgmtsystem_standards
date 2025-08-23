@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Categories -->
+    <record id="standard_category_cyber_security" model="mgmtsystem.standard.category">
+        <field name="name">Cyber Security</field>
+        <field name="description">Standards related to cyber security and information protection.</field>
+    </record>
+
+
+    <!-- Standards IEC 62443 2023-->
+    <record id="standard_iec_62443" model="mgmtsystem.standard">
+        <field name="name">IEC 62443 Demo</field>
+        <field name="title">IEC 62443 is a series of standards that address cybersecurity for operational technology in automation and control systems. It provides a systematic and practical approach to securing Industrial Automation and Control Systems (IACS).</field>
+        <field name="version">2023</field>
+        <field name="standard_type">security</field>
+        <field name="category_id" ref="standard_category_cyber_security"/>
+        <field name="issuing_body">IEC</field>
+        <field name="publication_date">2023-09-15</field>
+        <field name="effective_date">2023-09-15</field>
+        <field name="documentation_url">https://www.isa.org/standards-and-publications/isa-standards/isa-iec-62443-series</field>
+        <field name="description">IEC 62443 specifies requirements for a security management system when an organization needs to demonstrate its ability to consistently provide products and services that meet customer and applicable statutory and regulatory requirements, and aims to enhance customer satisfaction through the effective application of the system.</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->      
+        <field name="state">active</field>
+    </record>
+
+    <!-- IEC 62443 2023 Domains -->
+
+    <record id="domain_iec_62443_1" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">1</field>
+        <field name="name">IEC 62443-1</field>
+        <field name="title">General.</field>
+        <field name="description">This domain provides an overview of the IEC 62443 standard, its purpose, and its scope in the context of industrial control systems.</field>
+        <field name="domain_rationale">The IEC 62443 standard is essential for ensuring the security of industrial control systems, addressing both technical and organizational aspects of cybersecurity.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">1</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="domain_iec_62443_2" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">2</field>
+        <field name="name">IEC 62443-2</field>
+        <field name="title">Policies and Procedures</field>
+        <field name="description">This domain outlines the policies and procedures, including risk assessment and mitigation strategies, for securing industrial control systems.</field>
+        <field name="domain_rationale">Establishing clear policies and procedures is crucial for maintaining a robust security posture in industrial control systems.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">2</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="domain_iec_62443_3" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">3</field>
+        <field name="name">IEC 62443-3</field>
+        <field name="title">System Security Requirements</field>
+        <field name="description">This domain outlines the system security requirements for industrial control systems.</field>
+        <field name="domain_rationale">Defining system security requirements is essential for ensuring that industrial control systems are designed and implemented with security in mind.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">3</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="domain_iec_62443_4" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">4</field>
+        <field name="name">IEC 62443-4</field>
+        <field name="title">Component Security Requirements</field>
+        <field name="description">This domain specifies the security requirements for components used in industrial control systems.</field>
+        <field name="domain_rationale">Component security is critical for ensuring that individual parts of an industrial control system do not introduce vulnerabilities.</field>
+        <field name="state">implementing</field>
+        <!-- removed invalid sequence field -->
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- IEC 62443-1 2023 Domains -->
+
+    <record id="domain_iec_62443_1_1" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">1.1</field>
+        <field name="name">IEC 62443-1-1</field>
+        <field name="title">Terminology, Concepts, and Models</field>
+        <field name="description">This domain provides the terminology, concepts, and models used in the IEC 62443 standard.</field>
+        <field name="domain_rationale">Understanding the terminology and concepts is essential for effective communication and implementation of the IEC 62443 standard.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">5</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="domain_iec_62443_1_2" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">1.2</field>
+        <field name="name">IEC 62443-1-2</field>
+        <field name="title">Security Levels and Maturity Models</field>
+        <field name="description">This domain defines the security levels and maturity models for industrial control systems.</field>
+        <field name="domain_rationale">Establishing security levels and maturity models helps organizations assess their current security posture and plan for improvements.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">6</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- IEC 62443-2 2023 Domains -->
+    <record id="domain_iec_62443_2_1" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">2.1</field>
+        <field name="name">IEC 62443-2-1</field>
+        <field name="title">Security Program Requirements for IACS Asset Owners</field>
+        <field name="description">This domain outlines the security program requirements for asset owners of industrial control systems.</field>
+        <field name="domain_rationale">A robust security program is essential for asset owners to protect their industrial control systems from cyber threats.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">7</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+    <record id="domain_iec_62443_2_2" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">2.2</field>
+        <field name="name">IEC 62443-2-2</field>
+        <field name="title">Security Program Requirements for IACS Solution Providers</field>
+        <field name="description">This domain specifies the security program requirements for solution providers of industrial control systems.</field>
+        <field name="domain_rationale">Solution providers play a critical role in ensuring the security of industrial control systems, and their adherence to security programs is essential.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">8</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+    <!-- IEC 62443-3 2023 Domains -->
+
+    <record id="domain_iec_62443_3_1" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">3.1</field>
+        <field name="name">IEC 62443-3-1</field>
+        <field name="title">Security Technologies for IACS</field>
+        <field name="description">This domain covers the security technologies applicable to industrial control systems.</field>
+        <field name="domain_rationale">Implementing appropriate security technologies is crucial for protecting industrial control systems from cyber threats.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">9</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="domain_iec_62443_3_2" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">3.2</field>
+        <field name="name">IEC 62443-3-2</field>
+        <field name="title">Security Risk Assessment and System Design</field>
+        <field name="description">This domain focuses on security risk assessment and system design for industrial control systems.</field>
+        <field name="domain_rationale">Conducting security risk assessments and designing systems with security in mind are essential for mitigating risks in industrial control systems.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">10</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+    <record id="domain_iec_62443_3_3" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">3.3</field>
+        <field name="name">IEC 62443-3-3</field>
+        <field name="title">System Security Requirements and Security Levels</field>
+        <field name="description">This domain specifies the system security requirements and security levels for industrial control systems.</field>
+        <field name="domain_rationale">Defining system security requirements and security levels is essential for ensuring that industrial control systems are designed and implemented with security in mind.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">11</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+    <record id="domain_iec_62443_3_4" model="mgmtsystem.standard.domain">
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="reference">3.4</field>
+        <field name="name">IEC 62443-3-4</field>
+        <field name="title">Security for IACS Components</field>
+        <field name="description">This domain specifies the security requirements for components used in industrial control systems.</field>
+        <field name="domain_rationale">Ensuring the security of individual components is critical for maintaining the overall security of industrial control systems.</field>
+        <field name="state">implementing</field>
+        <field name="sequence">12</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- <field name="allowed_company_ids" ref="base.main_company"/>  -->
+    </record>
+
+    <!-- IEC 62443-3 2023 Controls -->
+    <record id="control_iec_62443_3_1" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment</field>
+        <field name="reference">3.1</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <!-- removed invalid control_category field -->
+        <field name="description">This control requires the organization to establish a security risk assessment process for industrial control systems.</field>
+        <!-- removed invalid rationale field -->
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+    </record>
+    <record id="control_iec_62443_3_1_2" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Process</field>
+        <field name="reference">3.1.2</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to establish a security risk assessment process for industrial control systems.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_3" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Documentation</field>
+        <field name="reference">3.1.3</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="additional_information">This control requires the organization to document the security risk assessment process and its results.</field>
+        <field name="description">This control requires the organization to document the security risk assessment process and its results.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_4" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Review</field>
+        <field name="reference">3.1.4</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to periodically review and update the security risk assessment process.</field>
+        <field name="additional_information">Periodic reviews and updates of the security risk assessment process are essential for adapting to changing threats and vulnerabilities.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_5" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Training</field>
+        <field name="reference">3.1.5</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to provide training on the security risk assessment process to relevant personnel.</field>
+        <field name="additional_information">Training on the security risk assessment process is essential for ensuring that personnel understand their roles and responsibilities in maintaining security.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_6" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Reporting</field>
+        <field name="reference">3.1.6</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to report the results of the security risk assessment to management.</field>
+        <field name="additional_information">Reporting the results of the security risk assessment to management is essential for informed decision-making and resource allocation.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_7" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Follow-up</field>
+        <field name="reference">3.1.7</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to follow up on identified risks and mitigation actions from the security risk assessment.</field>
+        <field name="additional_information">Following up on identified risks and mitigation actions is essential for ensuring that security measures are effectively implemented and maintained.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_8" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Communication</field>
+        <field name="reference">3.1.8</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to communicate the results of the security risk assessment to relevant stakeholders.</field>
+        <field name="additional_information">Effective communication of the results of the security risk assessment to relevant stakeholders is essential for ensuring that all parties are aware of identified risks and mitigation strategies.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_9" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Integration</field>
+        <field name="reference">3.1.9</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to integrate the security risk assessment process with other organizational processes.</field>
+        <field name="additional_information">Integrating the security risk assessment process with other organizational processes is essential for ensuring a holistic approach to security management.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+    <record id="control_iec_62443_3_1_10" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Continuous Improvement</field>
+        <field name="reference">3.1.10</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_1"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to continuously improve the security risk assessment process based on feedback and lessons learned.</field>
+        <field name="additional_information">Continuous improvement of the security risk assessment process is essential for adapting to evolving threats and vulnerabilities.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+    <record id="control_iec_62443_3_1_1" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment Process</field>
+        <field name="reference">3.1.1</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to establish a security risk assessment process for industrial control systems.</field>
+        <field name="additional_information">A security risk assessment process is essential for identifying and mitigating risks in industrial control systems.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+
+    <record id="control_iec_62443_3_2" model="mgmtsystem.standard.control">
+        <field name="name">Security Risk Assessment and System Design</field>
+        <field name="reference">3.2</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="domain_id" ref="domain_iec_62443_3_2"/>
+        <field name="control_type">governance</field>
+        <field name="description">This control requires the organization to conduct security risk assessments and design systems with security in mind.</field>
+        <field name="additional_information">Conducting security risk assessments and designing systems with security in mind are essential for mitigating risks in industrial control systems.</field>
+        <field name="state">implementing</field>
+        <field name="test_frequency">annual</field>
+        <field name="last_test_date" eval="(datetime.now() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="test_procedure">Refer to standard operating procedure for control testing.</field>
+        <field name="control_owner_id" ref="base.user_admin"/>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="is_required">True</field>
+        <field name="active">True</field>
+        <field name="company_id" ref="base.main_company"/>
+        <!-- removed invalid allowed_company_ids field -->
+    </record>
+
+
+    <!-- Requirements for IEC 62443 -->
+    <record id="requirement_iec_62443_3_3_1" model="mgmtsystem.standard.requirement">
+        <field name="name">System Security Requirements</field>
+        <field name="code">3.3.1</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="description">The system shall define security requirements based on a risk assessment.</field>
+    </record>
+
+    <record id="requirement_iec_62443_3_3_2" model="mgmtsystem.standard.requirement">
+        <field name="name">Security Levels</field>
+        <field name="code">3.3.2</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="description">The system shall define security levels for each component based on its criticality.</field>
+    </record>
+    <record id="requirement_iec_62443_3_4_1" model="mgmtsystem.standard.requirement">
+        <field name="name">Component Security Requirements</field>
+        <field name="code">3.4.1</field>
+        <field name="standard_id" ref="standard_iec_62443"/>
+        <field name="description">Each component shall meet specific security requirements to ensure the overall security of the system.</field>
+    </record>
+
+    <!-- Audit Question -->
+    <record id="audit_question_iso_9001_4_1_1" model="mgmtsystem.standard.audit.question">
+        <field name="name">Has the organization determined external and internal issues relevant to its purpose and strategic direction?</field>
+        <field name="requirement_id" ref="requirement_iso_9001_4_1"/>
+        <field name="expected_evidence">Documentation showing analysis of internal and external factors (e.g., SWOT analysis, business context document)</field>
+    </record>
+
+    <record id="audit_question_iso_9001_4_1_2" model="mgmtsystem.standard.audit.question">
+        <field name="name">Is there evidence that the organization monitors and reviews information about these external and internal issues?</field>
+        <field name="requirement_id" ref="requirement_iso_9001_4_1"/>
+        <field name="expected_evidence">Minutes of management review meetings, updates to context analysis</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- QWeb PDF Report Action for Standard Controls -->
+
+    <!-- QWeb Template for Standard Control Report -->
+    <template id="report_standard_control">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="control">
+                <div class="page">
+                    <h2>Control: <span t-esc="control.name"/></h2>
+                    <p><strong>Control ID:</strong> <span t-esc="control.reference"/></p>
+                    <p><strong>Code:</strong> <span t-esc="control.code"/></p>
+                    <p><strong>Description:</strong> <span t-esc="control.description"/></p>
+                    <p><strong>Standard:</strong> <span t-esc="control.standard_id.name"/></p>
+                    <p><strong>Domain:</strong> <span t-esc="control.domain_id.name"/></p>
+                    <p><strong>Company:</strong> <span t-esc="control.company_id.name"/></p>
+                    <p><strong>Owner:</strong> <span t-esc="control.control_owner_id.name"/></p>
+                    <p><strong>Status:</strong> <span t-esc="control.state"/></p>
+                    <p><strong>Control Type:</strong> <span t-esc="control.control_type"/></p>
+                    <p><strong>Priority:</strong> <span t-esc="control.priority"/></p>
+                    <p><strong>Required:</strong> <span t-esc="control.is_required"/></p>
+                    <p><strong>Effectiveness Score:</strong> <span t-esc="control.effectiveness_score"/></p>
+                    <p><strong>Last Assessment Date:</strong> <span t-esc="control.last_assessment_date"/></p>
+                    <p><strong>Implementation Time (hours):</strong> <span t-esc="control.implementation_time"/></p>
+                    <p><strong>Implementation Cost:</strong> <span t-esc="control.implementation_cost"/></p>
+                    <p><strong>Maintenance Time (minutes):</strong> <span t-esc="control.maintenance_time"/></p>
+                    <p><strong>Maintenance Cost:</strong> <span t-esc="control.maintenance_cost"/></p>
+                    <p><strong>Test Frequency:</strong> <span t-esc="control.test_frequency"/></p>
+                    <p><strong>Last Test Date:</strong> <span t-esc="control.last_test_date"/></p>
+                    <p><strong>Next Test Date:</strong> <span t-esc="control.next_test_date"/></p>
+                    <p><strong>Test Procedure:</strong> <span t-esc="control.test_procedure"/></p>
+                    <p><strong>Test Count:</strong> <span t-esc="control.test_count"/></p>
+                    <p><strong>Action Count:</strong> <span t-esc="control.action_count"/></p>
+                    <p><strong>Approval Date:</strong> <span t-esc="control.approval_date"/></p>
+                    <p><strong>Implementation Date:</strong> <span t-esc="control.implementation_date"/></p>
+                    <p><strong>Verification Date:</strong> <span t-esc="control.verification_date"/></p>
+                    <p><strong>Retirement Date:</strong> <span t-esc="control.retirement_date"/></p>
+                    <p><strong>Approved By:</strong> <span t-esc="control.approver_id.name"/></p>
+                    <p><strong>Verified By:</strong> <span t-esc="control.verifier_id.name"/></p>
+                    <p><strong>Automated Assessment:</strong> <span t-esc="control.automated_assessment"/></p>
+                    <p><strong>Assessment Tool:</strong> <span t-esc="control.assessment_tool"/></p>
+                    <p><strong>Last Automated Check:</strong> <span t-esc="control.last_automated_check"/></p>
+                    <p><strong>Automated Check Result:</strong> <span t-esc="control.automated_check_result"/></p>
+                    <p><strong>Additional Information:</strong> <span t-esc="control.additional_information"/></p>
+                    <p><strong>Implementation Details:</strong> <span t-esc="control.implementation_details"/></p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    
+    
+
+
+</odoo>

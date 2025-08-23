@@ -1,0 +1,52 @@
+<odoo>
+    <record id="view_mgmtsystem_standard_assessment_tool_list" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.control.assessment.tool.list</field>
+        <field name="model">mgmtsystem.standard.control.assessment.tool</field>
+        <field name="arch" type="xml">
+            <list string="Assessment Tools" >
+                <field name="name"/>
+                <field name="tool_type"/>
+                <field name="linked_control_ids"/>
+
+                <field name="company_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mgmtsystem_standard_assessment_tool_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.control.assessment.tool.form</field>
+        <field name="model">mgmtsystem.standard.control.assessment.tool</field>
+        <field name="arch" type="xml">
+            <form string="Assessment Tool">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="tool_type"/>
+                            <field name="control_id"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <field name="linked_control_ids" group_by_standard="True"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mgmtsystem_standard_assessment_tool" model="ir.actions.act_window">
+        <field name="name">Assessment Tools</field>
+        <field name="res_model">mgmtsystem.standard.control.assessment.tool</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_mgmtsystem_standard_assessment_tool_root" name="🛠️ Assessment Tools" parent="menu_mgmtsystem_standards_root" sequence="60"/>
+    <menuitem id="menu_mgmtsystem_standard_assessment_tool" name="🛠️ Tool List" parent="menu_mgmtsystem_standard_assessment_tool_root" action="action_mgmtsystem_standard_assessment_tool" sequence="5"/>
+</odoo>

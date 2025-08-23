@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Category Form View -->
+    <record id="view_mgmtsystem_standard_category_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.category.form</field>
+        <field name="model">mgmtsystem.standard.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+                    <field name="color" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Category Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="complete_name" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Add detailed description here..."/>
+                        </page>
+                        <page string="Standards">
+                            <field name="standard_ids">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="standard_type"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Child Categories" invisible="child_ids == []">
+                            <field name="child_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="complete_name"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Standard Category List View -->
+    <record id="view_mgmtsystem_standard_category_list" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.category.list</field>
+        <field name="model">mgmtsystem.standard.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="complete_name"/>
+                <field name="parent_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Standard Category Search View -->
+    <record id="view_mgmtsystem_standard_category_search" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.category.search</field>
+        <field name="model">mgmtsystem.standard.category</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="complete_name"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Parent Category" name="group_by_parent" domain="[]" context="{'group_by': 'parent_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Standard Category Action Window -->
+    <record id="action_mgmtsystem_standard_category" model="ir.actions.act_window">
+        <field name="name">Standard Categories</field>
+        <field name="res_model">mgmtsystem.standard.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_mgmtsystem_standard_category_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Standard Category
+            </p>
+            <p>
+                Categories help organize standards by type, industry, or application area.
+                Examples include Quality Management, Environmental Management, IT Security, etc.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_mgmtsystem_standard_categories"
+              name="Standard Categories"
+              parent="menu_mgmtsystem_standards_root"
+              action="action_mgmtsystem_standard_category"
+              sequence="20"/>
+</odoo>

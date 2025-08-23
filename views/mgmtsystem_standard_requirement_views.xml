@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Requirement Form View -->
+    <record id="view_mgmtsystem_standard_requirement_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.requirement.form</field>
+        <field name="model">mgmtsystem.standard.requirement</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+                    <field name="color" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" placeholder="e.g. 4.1" class="oe_inline"/> -
+                            <field name="name" placeholder="Requirement Title" class="oe_inline"/>
+                        </h1>
+                        <h3>
+                            <field name="complete_code" readonly="1" class="oe_inline"/> 
+                            <span class="oe_inline" invisible="complete_code == False"> - </span>
+                            <field name="standard_id" options="{'no_open': True, 'no_create': True}" class="oe_inline"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="parent_id" domain="[('standard_id', '=', standard_id)]"/>
+                            <field name="sequence"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                        <group>
+                            <field name="compliance_status" widget="selection_badge"/>
+                            <field name="responsible_id"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Add detailed description of this requirement..."/>
+                        </page>
+                        <page string="Implementation Evidence">
+                            <field name="implementation_evidence" placeholder="Describe what evidence demonstrates compliance..."/>
+                        </page>
+                        <page string="Compliance Notes">
+                            <field name="compliance_notes" placeholder="Add notes about the compliance status..."/>
+                        </page>
+                        <page string="Audit Questions">
+                            <field name="audit_question_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="expected_evidence"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="datas" filename="name" widget="binary"/>
+                                    <field name="create_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Child Requirements" invisible="child_ids == []">
+                            <field name="child_ids">
+                                <list>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="compliance_status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Standard Requirement List View -->
+    <record id="view_mgmtsystem_standard_requirement_list" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.requirement.list</field>
+        <field name="model">mgmtsystem.standard.requirement</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="complete_code"/>
+                <field name="name"/>
+                <field name="standard_id"/>
+                <field name="compliance_status"/>
+                <field name="priority" widget="priority"/>
+                <field name="responsible_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Standard Requirement Search View -->
+    <record id="view_mgmtsystem_standard_requirement_search" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.requirement.search</field>
+        <field name="model">mgmtsystem.standard.requirement</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="complete_code"/>
+                <field name="standard_id"/>
+                <field name="responsible_id"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="Compliant" name="compliant" domain="[('compliance_status', '=', 'compliant')]"/>
+                <filter string="Partially Compliant" name="partial" domain="[('compliance_status', '=', 'partial')]"/>
+                <filter string="Non-Compliant" name="non_compliant" domain="[('compliance_status', '=', 'non_compliant')]"/>
+                <filter string="Not Applicable" name="not_applicable" domain="[('compliance_status', '=', 'not_applicable')]"/>
+                <filter string="Not Evaluated" name="not_evaluated" domain="[('compliance_status', '=', 'not_evaluated')]"/>
+                <filter string="High Priority" name="high_priority" domain="[('priority', 'in', ['2', '3'])]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Standard" name="group_by_standard" domain="[]" context="{'group_by': 'standard_id'}"/>
+                    <filter string="Compliance Status" name="group_by_compliance" domain="[]" context="{'group_by': 'compliance_status'}"/>
+                    <filter string="Priority" name="group_by_priority" domain="[]" context="{'group_by': 'priority'}"/>
+                    <filter string="Responsible" name="group_by_responsible" domain="[]" context="{'group_by': 'responsible_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Standard Requirement Action Window -->
+    <record id="action_mgmtsystem_standard_requirement" model="ir.actions.act_window">
+        <field name="name">Standard Requirements</field>
+        <field name="res_model">mgmtsystem.standard.requirement</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_mgmtsystem_standard_requirement_search"/>
+        <field name="context">{"search_default_not_evaluated": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Standard Requirement
+            </p>
+            <p>
+                Requirements are specific clauses or sections within standards that
+                describe what must be implemented to comply with the standard.
+                Each requirement can be tracked for compliance status.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_mgmtsystem_standard_requirements"
+              name="Requirements"
+              parent="menu_mgmtsystem_standards_root"
+              action="action_mgmtsystem_standard_requirement"
+              sequence="30"/>
+</odoo>

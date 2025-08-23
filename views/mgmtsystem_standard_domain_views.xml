@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard Domain Form View -->
+    <record id="view_mgmtsystem_standard_domain_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.domain.form</field>
+        <field name="model">mgmtsystem.standard.domain</field>
+        <field name="arch" type="xml">
+            <form string="Standard Domain">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': true}" 
+                           statusbar_visible="draft,review,approved,implementing,implemented,verified"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <h2>
+                            <field name="title" />
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="reference" />
+                            <field name="standard_id"/>
+                            <field name="parent_id"  domain="[('standard_id', '=', standard_id)]"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name ="company_id" context="{'show_company': True}"/>
+                            <field name="owner_id" domain="[('company_id', '=', company_id)]"/>
+                            <field name="control_count"/>
+                            <field name="compliance_score" widget="percentpie"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="ISO/IEC 27001 is the international standard for information security management systems (ISMS). The 2022 version introduces new controls and restructures existing ones to better address modern security challenges."/>
+                        </page>
+                        <page string="Requirements">
+                            <field name="domain_requirements" placeholder="Add domain requirements or controls..."/>
+                        </page>
+                        <page string="Rationale">
+                            <field name="domain_rationale" placeholder="Add domain rationale..."/>
+                        </page>
+                        <page string="📝 Additional Information">
+                            <field name="additional_information" placeholder="Add any additional information..."/>
+                        </page>
+                        <page string="📦 Related Products" invisible="product_ids == []">
+                            <field name="product_ids">
+                                <list>
+                                    <field name="default_code"/>
+                                    <field name="name"/>
+                                    <field name="list_price"/>
+                                    <field name="standard_price" groups="base.group_user"/>
+                                    <field name="type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="👥 Child Domains ( )" invisible="child_ids == []">
+                            <field name="child_ids">
+                                <list>
+                                    <field name="reference"/>
+                                    <field name="name"/>
+                                    <field name="title"/>
+                                    <field name="description"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="👥 Domain Controls" invisible="control_ids == []">
+                            <field name="control_ids">
+                                <list
+                                    decoration-muted="state == 'retired'" 
+                                    decoration-danger="state == 'ineffective'" 
+                                    decoration-success="state == 'verified'" 
+                                    decoration-primary="state == 'implementing'"
+                                    >
+                                    <field name="reference"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        
+                        <page string="🛡️ Allowed Companies" name="allowed_companies">
+                          <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Standard Domain List View -->
+    <record id="view_mgmtsystem_standard_domain_tree" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.domain.tree</field>
+        <field name="model">mgmtsystem.standard.domain</field>
+        <field name="arch" type="xml">
+            <list 
+            decoration-warning="state == 'draft'"
+            decoration-info="state in ['review', 'implementing']"
+            decoration-success="state == 'approved'"
+            decoration-primary="state == 'implementing'"
+            decoration-muted="state in ['retired', 'ineffective']"
+            default_group_by="standard_id">
+                <field name="sequence" widget="handle"/>
+                <field name="standard_id"/>
+                <field name="name" optional="hide"/>
+                <field name="reference"/>
+                <field name="title"/>
+                <field name="version" optional="hide"/>
+                <field name="description" width="250px"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="compliance_score" widget="percentpie" optional="hide"/>
+                <field name="control_count"/>
+                <field name="implemented_control_count"/>
+                <!-- <field name="last_assessment_date"/> -->
+                <!-- <field name="next_assessment_date"/> -->
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Standard Domain Search View -->
+    <record id="view_mgmtsystem_standard_domain_search" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.domain.search</field>
+        <field name="model">mgmtsystem.standard.domain</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="standard_id"/>
+                <field name="parent_id"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="In Review" name="review" domain="[('state', '=', 'review')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Implementing" name="implementing" domain="[('state', '=', 'implementing')]"/>
+                <filter string="Implemented" name="implemented" domain="[('state', '=', 'implemented')]"/>
+                <filter string="Verified" name="verified" domain="[('state', '=', 'verified')]"/>
+                <filter string="Ineffective" name="ineffective" domain="[('state', '=', 'ineffective')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Standard" name="group_by_standard" domain="[]" context="{'group_by': 'standard_id'}"/>
+                    <filter string="Parent Domain" name="group_by_parent" domain="[]" context="{'group_by': 'parent_id'}"/>
+                    <filter string="Status" name="group_by_state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Standard Domain Kanban View -->
+    <record id="view_mgmtsystem_standard_domain_kanban" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.domain.kanban</field>
+        <field name="model">mgmtsystem.standard.domain</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_group_by="state">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="standard_id"/>
+                <field name="state"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.state.raw_value == 'ineffective' ? 'oe_kanban_color_3' : ''} oe_kanban_color_#{kanban_color(record.color.raw_value)}">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <strong><field name="reference"/></strong>
+                                </div>
+                                <div>
+                                    <field name="name"/>
+                                </div>
+                                <div class="text-muted">
+                                    <span class="o_kanban_record_subtitle"><field name="standard_id"/></span>
+                                </div>
+                                <div>
+                                    <span class="badge badge-pill float-right mb4" t-attf-class="badge-#{record.state.raw_value == 'implemented' ? 'success' : (record.state.raw_value == 'draft' ? 'warning' : (record.state.raw_value == 'verified' ? 'info' : 'secondary'))}">
+                                        <field name="state"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Standard Domain Action Window -->
+    <record id="action_mgmtsystem_standard_domain" model="ir.actions.act_window">
+        <field name="name">Standard Domains</field>
+        <field name="res_model">mgmtsystem.standard.domain</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="search_view_id" ref="view_mgmtsystem_standard_domain_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Standard Domain
+            </p>
+            <p>
+                Domains are major categories or sections within standards that group related requirements.
+                For example, in ISO 27001, domains include "A.5 Information security policies",
+                "A.6 Organization of information security", etc.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_mgmtsystem_standard_domains"
+              name="Domains"
+              parent="menu_mgmtsystem_standards_root"
+              action="action_mgmtsystem_standard_domain"
+              sequence="25"/>
+</odoo>
