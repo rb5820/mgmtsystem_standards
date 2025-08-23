@@ -34,7 +34,7 @@
 
     ],
     'demo': [
-        'data/mgmtsystem_standard_demo.xml',
+        'data/mgmtsystem_standard_data.xml',
     ],
     'installable': True,
     'application': True,
