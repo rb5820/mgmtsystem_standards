@@ -24,6 +24,12 @@ class MgmtSystemStandardRequirement(models.Model):
         tracking=True,
         help="Name or title of the requirement"
     )
+    
+    title = fields.Char(
+        string="Title",
+        tracking=True,
+        help="Title of the requirement"
+    )
 
     code = fields.Char(
         string="Code/Clause",

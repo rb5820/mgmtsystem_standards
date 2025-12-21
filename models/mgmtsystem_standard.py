@@ -6,7 +6,6 @@ from odoo.exceptions import ValidationError
 
 class MgmtSystemStandard(models.Model):
 
-
     """Management System Standard
     
     This model represents management system standards such as ISO standards,
@@ -15,7 +14,6 @@ class MgmtSystemStandard(models.Model):
     _name = "mgmtsystem.standard"
     _description = "Management System Standard"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _order = "code, name"
     _check_company_auto = True
     _parent_name = 'parent_id'                  # by default its name is parent_id you can change it
     _parent_store = True                        # tell odoo that this model support parent & child relation ship
@@ -183,11 +181,18 @@ class MgmtSystemStandard(models.Model):
         for record in self:
             # Direct Many2many relation
             direct_products = record.product_ids
-            # Indirect: via mgmtsystem.standard.product
-            ProductStandard = self.env['mgmtsystem.standard.product']
-            indirect_products = ProductStandard.search([
-                ('standard_id', '=', record.id)
-            ]).mapped('product_id')
+            indirect_products = self.env['product.template']
+            
+            # Indirect: via mgmtsystem.standard.product (if the model exists)
+            try:
+                ProductStandard = self.env['mgmtsystem.standard.product']
+                indirect_products = ProductStandard.search([
+                    ('standard_id', '=', record.id)
+                ]).mapped('product_id')
+            except KeyError:
+                # Model doesn't exist, skip indirect products
+                indirect_products = self.env['product.template']
+            
             # Union of both sets
             all_products = (direct_products | indirect_products)
             record.all_product_ids = all_products
@@ -282,6 +287,12 @@ class MgmtSystemStandard(models.Model):
     
     color = fields.Integer(string='Color Index')
     
+    external_id = fields.Char(
+        string="External ID",
+        compute="_compute_external_id",
+        help="External identifier from data import (XML ID)"
+    )
+    
     # Control Implementation Status
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -339,6 +350,74 @@ class MgmtSystemStandard(models.Model):
                 record.code = f"{record.name}:{record.version}"
             else:
                 record.code = record.name or ''
+    
+    def action_rebuild_parent_store(self):
+        """Rebuild the nested set hierarchy for all domains."""
+        domain_model = self.env['mgmtsystem.standard.domain']
+        
+        # Get all domains across all standards (needed for proper nested set rebuild)
+        all_domains = domain_model.search([])
+        
+        if all_domains:
+            try:
+                # Clear existing parent_left and parent_right values
+                self.env.cr.execute("""
+                    UPDATE mgmtsystem_standard_domain 
+                    SET parent_left = 0, parent_right = 0
+                """)
+                
+                # Rebuild parent store using Odoo's internal method
+                domain_model._parent_store_compute()
+                
+                # Commit the changes
+                self.env.cr.commit()
+                
+                # Invalidate cache to ensure fresh data
+                domain_model.invalidate_recordset(['parent_left', 'parent_right'])
+                
+                message = f'Successfully rebuilt hierarchy for {len(all_domains)} domain records.'
+                notification_type = 'success'
+                
+            except Exception as e:
+                # If rebuild fails, show error
+                message = f'Error rebuilding hierarchy: {str(e)}'
+                notification_type = 'danger'
+            
+            # Return action to reload the current form and show notification
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': message,
+                    'type': notification_type,
+                    'next': {
+                        'type': 'ir.actions.client',
+                        'tag': 'reload',
+                    }
+                }
+            }
+        else:
+            # If no domains, just show a message
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': 'No domains found in the system.',
+                    'type': 'warning',
+                }
+            }
+    
+    def _compute_external_id(self):
+        """Compute the external ID (XML ID) for this record"""
+        for record in self:
+            data = self.env['ir.model.data'].search([
+                ('model', '=', record._name),
+                ('res_id', '=', record.id)
+            ], limit=1)
+            if data:
+                record.external_id = f"{data.module}.{data.name}"
+            else:
+                record.external_id = False
     
     # Add a SQL constraint to ensure uniqueness per company
     _sql_constraints = [

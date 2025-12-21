@@ -21,6 +21,12 @@ class MgmtSystemStandardAuditQuestion(models.Model):
         tracking=True,
         help="Audit question text"
     )
+    
+    title = fields.Char(
+        string="Title",
+        tracking=True,
+        help="Title of the audit question"
+    )
 
     sequence = fields.Integer(
         default=10,

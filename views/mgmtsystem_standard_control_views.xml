@@ -38,16 +38,18 @@
 
                     <div class="oe_title">
                         <h1>
-                            <field name="reference"/>
+                            <field name="name"/>
                         </h1>
                         <h2>
-                            <field name="name" />
+                            <field name="title" />
                         </h2>
                     </div>
 
 
                     <group>
                         <group>
+                            <field name="external_id" groups="base.group_system" readonly="1"/>
+                            <field name="reference"/>
                             <field name="standard_id"/>
                             <field name="domain_id"/>
                             <field name="control_type"/>
@@ -63,10 +65,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description">
+                        <page string="📋 Description">
                             <field name="description" placeholder="Add detailed description here..."/>
                         </page>
-                        <page string="Implementation">
+                        <page string="⚙️ Implementation">
                             <group>
                             <field name="rationale"/>
                             <field name="impact"/>
@@ -74,7 +76,7 @@
                             <field name="implementation_details" placeholder="Details on how the control is implemented..."/>
                             </group>
                         </page>
-                        <page string="Test Procedure">
+                        <page string="🧪 Test Procedure">
                             <group>
                                 <field name="audit"/>
                                 <field name="test_frequency"/>
@@ -83,10 +85,10 @@
                                 <field name="next_test_date" readonly="1"/>
                             </group>
                         </page>
-                        <page string="Additional Information">
+                        <page string="ℹ️ Additional Information">
                             <field name="additional_information" placeholder="Add any additional information..."/>
                         </page>
-                        <page string="Documents">
+                        <page string="📄 Documents">
                             <field name="document_ids">
                                 <list>
                                     <field name="name"/>
@@ -95,7 +97,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Cost Information">
+                        <page string="💰 Cost Information">
                             <group>
                                 <group>
                                     <field name="implementation_time"/>
@@ -107,7 +109,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Automated Assessment">
+                        <page string="🤖 Automated Assessment">
                             <group>
                                 <field name="automated_assessment"/>
 
@@ -116,7 +118,7 @@
                                 <field name="automated_check_result" invisible="not automated_assessment"/>
                             </group>
                         </page>
-                        <page string="Tracking Information">
+                        <page string="📊 Tracking Information">
                             <group>
                                 <group string="Dates">
                                     <field name="approval_date"/>
@@ -149,6 +151,7 @@
                 decoration-success="state == 'verified'" 
                 decoration-primary="state == 'implementing'">
                 <!-- Visible fields -->
+                <field name="external_id" groups="base.group_system" optional="hide"/>
                 <field name="reference" optional="hide"/>
                 <field name="name"/>
                 <field name="standard_id"/>
@@ -195,7 +198,8 @@
                 <field name="control_type"/>
                 <field name="description"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
-                <filter string="Required Controls" name="required" domain="[('is_required', '=', True)]"/>
+                <filter string="Required Controls" name="required" domain="[('is_required', '=', False)]"/>
+                <filter string="Not Required Controls" name="not_required" domain="[('is_required', '=', True)]"/>
                 <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="Under Review" name="review" domain="[('state', '=', 'review')]"/>
                 <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>

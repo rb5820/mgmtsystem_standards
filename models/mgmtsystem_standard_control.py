@@ -17,10 +17,21 @@ class StandardControl(models.Model):
     
     active = fields.Boolean('Active', default=True, help="If unchecked, it will allow you to hide this control without removing it.")
 
+    external_id = fields.Char(
+        string="External ID",
+        compute="_compute_external_id",
+        help="External identifier from data import (XML ID)"
+    )
+
     implemented = fields.Boolean('Implemented', compute='_compute_implemented', store=True, 
                                help="Indicates if the control is currently implemented.")
     
-
+    title = fields.Char(
+        string='Title',
+        required=False,
+        tracking=True,
+        help="The official title of the control as defined in the standard framework"
+    )
 
     standard_id = fields.Many2one(
         'mgmtsystem.standard',
@@ -76,6 +87,15 @@ class StandardControl(models.Model):
     )
 
     # CIS Controls
+
+    # odoo list sequence
+
+    sequence = fields.Integer(
+        'Sequence',
+        default=10,
+        help="Sequence order for displaying controls"
+    )
+
 
 
     company_id = fields.Many2one(
@@ -164,9 +184,9 @@ class StandardControl(models.Model):
 
     #FIXME RB5820: added is_required field to indicate if the control is mandatory abd to avoid error
     is_required = fields.Boolean(
-        string='Required',
+        string='Not Required',
         default=False,
-        help="Indicates if this control is mandatory"
+        help="Indicates if this control is not required for this company"
     )
     
     # Effectiveness Metrics
@@ -470,3 +490,15 @@ class StandardControl(models.Model):
         """Determine if control is implemented based on its state"""
         for control in self:
             control.implemented = control.state in ['implemented', 'verified']
+
+    def _compute_external_id(self):
+        """Compute the external ID (XML ID) for this record"""
+        for record in self:
+            data = self.env['ir.model.data'].search([
+                ('model', '=', record._name),
+                ('res_id', '=', record.id)
+            ], limit=1)
+            if data:
+                record.external_id = f"{data.module}.{data.name}"
+            else:
+                record.external_id = False

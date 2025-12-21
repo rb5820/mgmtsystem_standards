@@ -12,16 +12,18 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1>
-                            <field name="name"/>
-                        </h1>
                         <h2>
-                            <field name="title" />
+                            <field name="name"/>
                         </h2>
+                        <h3>
+                            <field name="title" />
+                        </h3>
                     </div>
+
 
                     <group>
                         <group>
+                            <field name="external_id" groups="base.group_system" readonly="1"/>
                             <field name="reference" />
                             <field name="standard_id"/>
                             <field name="parent_id"  domain="[('standard_id', '=', standard_id)]"/>
@@ -35,19 +37,19 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description">
+                        <page string="📋 Description">
                             <field name="description" placeholder="ISO/IEC 27001 is the international standard for information security management systems (ISMS). The 2022 version introduces new controls and restructures existing ones to better address modern security challenges."/>
                         </page>
-                        <page string="Requirements">
+                        <page string="✅ Requirements">
                             <field name="domain_requirements" placeholder="Add domain requirements or controls..."/>
                         </page>
-                        <page string="Rationale">
+                        <page string="💡 Rationale">
                             <field name="domain_rationale" placeholder="Add domain rationale..."/>
                         </page>
                         <page string="📝 Additional Information">
                             <field name="additional_information" placeholder="Add any additional information..."/>
                         </page>
-                        <page string="📦 Related Products" invisible="product_ids == []">
+                        <page string="📦 Related Products" invisible="not product_ids">
                             <field name="product_ids">
                                 <list>
                                     <field name="default_code"/>
@@ -58,7 +60,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="👥 Child Domains ( )" invisible="child_ids == []">
+                        <page string="👥 Child Domains ( )">
                             <field name="child_ids">
                                 <list>
                                     <field name="reference"/>
@@ -107,21 +109,23 @@
             decoration-primary="state == 'implementing'"
             decoration-muted="state in ['retired', 'ineffective']"
             default_group_by="standard_id">
+                <field name="external_id" groups="base.group_system" optional="hide"/>
                 <field name="sequence" widget="handle"/>
-                <field name="standard_id"/>
+                <field name="standard_id" optional="hide"/>
                 <field name="name" optional="hide"/>
                 <field name="reference"/>
                 <field name="title"/>
                 <field name="version" optional="hide"/>
-                <field name="description" width="250px"/>
+                <field name="description" width="250px" optional="hide"/>
                 <field name="parent_id" optional="hide"/>
                 <field name="compliance_score" widget="percentpie" optional="hide"/>
                 <field name="control_count"/>
                 <field name="implemented_control_count"/>
                 <!-- <field name="last_assessment_date"/> -->
                 <!-- <field name="next_assessment_date"/> -->
-                <field name="state"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company" optional="hide"/>
             </list>
         </field>
     </record>

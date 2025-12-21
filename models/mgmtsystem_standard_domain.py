@@ -14,7 +14,7 @@ class StandardDomain(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _parent_name = 'parent_id'  # 🛡️ SECURITY: Define parent field for hierarchy
     _parent_store = True  # 🛡️ SECURITY: Store parent-child relationships for hierarchy integrity
-    _order = "sequence, id"
+    _order = "parent_left,sequence, id"
     _check_company_auto = True
        
     
@@ -70,6 +70,12 @@ class StandardDomain(models.Model):
         required=True,
         ondelete='cascade',
         tracking=True
+    )
+    
+    zone_id = fields.Many2one(
+        'mgmtsystem.standard.zone',
+        string="Security Zone",
+        help="Security zone this domain belongs to"
     ) 
 
     # ========================================================================= 
@@ -197,6 +203,12 @@ class StandardDomain(models.Model):
         string="Owner",
         help="User responsible for this domain"
     )
+    
+    external_id = fields.Char(
+        string="External ID",
+        compute="_compute_external_id",
+        help="External identifier from data import (XML ID)"
+    )
         
     active = fields.Boolean(
         default=True, 
@@ -243,8 +255,18 @@ class StandardDomain(models.Model):
             if record.control_count:
                 record.compliance_score = (record.implemented_control_count / record.control_count) * 100
             else:
-                record.compliance_score = 0
-    
+                record.compliance_score = 0    
+    def _compute_external_id(self):
+        """Compute the external ID (XML ID) for this record"""
+        for record in self:
+            data = self.env['ir.model.data'].search([
+                ('model', '=', record._name),
+                ('res_id', '=', record.id)
+            ], limit=1)
+            if data:
+                record.external_id = f"{data.module}.{data.name}"
+            else:
+                record.external_id = False    
     def name_get(self):
         """Custom name display to include the reference code"""
         result = []
@@ -269,3 +291,28 @@ class StandardDomain(models.Model):
                 'default_standard_id': self.standard_id.id,
             }
         }
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Override create to handle domain creation"""
+        result = super().create(vals_list)
+        return result
+    
+    def write(self, vals):
+        """Override write to handle domain updates"""
+        result = super().write(vals)
+        return result
+    
+    def action_rebuild_parent_store(self):
+        """Rebuild the nested set model (parent_left/right) for all domains"""
+        self.env['mgmtsystem.standard.domain']._parent_store_compute()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+    
+    @api.model
+    def recompute_parent_store(self):
+        """Manually recompute parent store for all records"""
+        self._parent_store_compute()
+        return True

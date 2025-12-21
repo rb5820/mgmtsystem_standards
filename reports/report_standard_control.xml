@@ -30,7 +30,7 @@
                     <p><strong>Status:</strong> <span t-esc="control.state"/></p>
                     <p><strong>Control Type:</strong> <span t-esc="control.control_type"/></p>
                     <p><strong>Priority:</strong> <span t-esc="control.priority"/></p>
-                    <p><strong>Required:</strong> <span t-esc="control.is_required"/></p>
+                    <p><strong>Not Required:</strong> <span t-esc="control.is_required"/></p>
                     <p><strong>Effectiveness Score:</strong> <span t-esc="control.effectiveness_score"/></p>
                     <p><strong>Last Assessment Date:</strong> <span t-esc="control.last_assessment_date"/></p>
                     <p><strong>Implementation Time (hours):</strong> <span t-esc="control.implementation_time"/></p>

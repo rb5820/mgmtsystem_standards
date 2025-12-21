@@ -13,6 +13,7 @@
         'mail',
         'mgmtsystem',
         'document_page',
+        'product',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -25,6 +26,7 @@
         'views/mgmtsystem_standard_domain_views.xml',
         'views/mgmtsystem_standard_requirement_views.xml',
         'views/mgmtsystem_standard_control_views.xml',
+        'views/mgmtsystem_standard_certification_views.xml',
         'views/mgmtsystem_standard_assessment_tool_views.xml',
         # Data
         'data/mgmtsystem_standard_data.xml',

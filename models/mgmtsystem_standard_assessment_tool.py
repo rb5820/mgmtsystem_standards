@@ -7,6 +7,11 @@ class StandardAssessmentTool(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Tool Name', required=True, help='Name of the assessment tool or integration.')
+    title = fields.Char(
+        string='Title',
+        tracking=True,
+        help='Title of the assessment tool'
+    )
     description = fields.Text(string='Description', help='Description of the assessment tool.')
     tool_type = fields.Selection([
         ('manual', 'Manual'),

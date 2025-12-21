@@ -19,6 +19,11 @@ class MgmtSystemStandardCategory(models.Model):
         required=True,
         tracking=True,
     )
+    title = fields.Char(
+        string='Title',
+        tracking=True,
+        help="Title of the category"
+    )
     description = fields.Text(
         string='Description',
         tracking=True,
