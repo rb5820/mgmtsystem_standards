@@ -73,6 +73,7 @@
                                     <field name="standard_id" optional="hide"/>
                                     <field name="name" />
                                     <field name="description" optional="hide"/>
+                                    <field name="child_domain_count"/>
                                     <field name="control_count"/>
                                     <field name="implemented_control_count" optional="hide"/>
                                     <field name="state"/>

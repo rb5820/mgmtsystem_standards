@@ -228,6 +228,13 @@ class StandardDomain(models.Model):
         store=True
     )   
     
+    child_domain_count = fields.Integer(
+        compute="_compute_statistics",
+        string="Child Domains",
+        store=True,
+        help="Number of child domains under this domain"
+    )
+    
     
     @api.depends('parent_id', 'parent_id.path_level')
     def _compute_path_level(self):
@@ -238,14 +245,37 @@ class StandardDomain(models.Model):
             else:
                 record.path_level = record.parent_id.path_level + 1
     
-    @api.depends('control_ids', 'control_ids.implemented')
+    @api.depends('control_ids', 'control_ids.implemented', 'child_ids', 'child_ids.control_ids', 'child_ids.control_ids.implemented')
     def _compute_statistics(self):
-        """Compute control statistics for this domain"""
+        """Compute control statistics for this domain and all descendants"""
         for record in self:
-            record.control_count = len(record.control_ids)
+            # Get all descendant domains using parent_path for efficiency
+            descendant_domains = record._get_all_descendant_domains()
             
-            implemented = record.control_ids.filtered(lambda c: c.implemented)
+            # Count all controls from this domain and all descendants
+            all_controls = record.env['mgmtsystem.standard.control'].search([
+                ('domain_id', 'in', descendant_domains.ids + [record.id])
+            ])
+            
+            record.control_count = len(all_controls)
+            
+            implemented = all_controls.filtered(lambda c: c.implemented)
             record.implemented_control_count = len(implemented)
+            
+            # Count direct child domains only (immediate children)
+            record.child_domain_count = len(record.child_ids)
+    
+    def _get_all_descendant_domains(self):
+        """Get all descendant domains efficiently using parent_path"""
+        if not self.parent_path:
+            return self.env['mgmtsystem.standard.domain'].browse()
+        
+        # Use parent_path to find all descendants efficiently
+        return self.env['mgmtsystem.standard.domain'].search([
+            ('parent_path', 'like', self.parent_path + '%'),
+            ('id', '!=', self.id),
+            ('standard_id', '=', self.standard_id.id)
+        ])
     
     
     @api.depends('control_ids.implemented', 'control_count')

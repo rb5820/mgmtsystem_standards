@@ -73,6 +73,7 @@
                                     <field name="name"/>
                                     <field name="title" optional="hide"/>
                                     <field name="description" optional="hide"/>
+                                    <field name="child_domain_count"/>
                                     <field name="control_count"/>
                                     <field name="state"/>
 
@@ -133,6 +134,7 @@
                 <field name="compliance_score" widget="percentpie" optional="hide"/>
                 <field name="control_count"/>
                 <field name="implemented_control_count"/>
+                <field name="child_domain_count"/>
                 <!-- <field name="last_assessment_date"/> -->
                 <!-- <field name="next_assessment_date"/> -->
                 <field name="state" optional="hide"/>
