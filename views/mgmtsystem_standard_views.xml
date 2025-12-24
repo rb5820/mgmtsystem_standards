@@ -50,8 +50,6 @@
                             <field name="control_count"/>
                             <field name="implemented_control_count"/>
                             <field name="compliance_score" widget="percentpie"/>
-                            <field name="parent_left"/>
-                            <field name="parent_right"/>
                         </group>
                     </group>
                     <notebook>
@@ -59,24 +57,24 @@
                             <field name="description" placeholder="Add detailed description here..."/>
                         </page>
                         <page string="🏗️ Standard domains">
-                            <field name="domain_ids" parent_field="parent_id" >
-                                <list                               
+                            <field name="domain_ids" domain="[('parent_id', '=', 0)]" >
+                                <list                              
                                 decoration-warning="state == 'draft'"
                                 decoration-info="state in ['review', 'implementing']"
-                                decoration-success="state == 'approved'"
+                                decoration-success="state in ['approved','active']"
                                 decoration-primary="state == 'implementing'"
                                 decoration-muted="state in ['retired', 'ineffective']">
+                                    <!-- <field name="sequence" widget="handle"/> -->
                                     <field name="path_level" readonly="1"/>
-                                    <field name="parent_id" readonly="1"/>
-                                    <field name="parent_left" readonly="1"/>
-                                    <field name="parent_right" readonly="1"/>
-                                    <field name="sequence" widget="handle"/>
+                                    <field name="reference"/>
+                                    <field name="parent_id" readonly="1" optional="hide"/>
+                                    <field name="parent_left" readonly="1" optional="hide"/>
+                                    <field name="parent_right" readonly="1" optional="hide"/>
                                     <field name="standard_id" optional="hide"/>
                                     <field name="name" />
-                                    <field name="reference"/>
-                                    <field name="description"/>
+                                    <field name="description" optional="hide"/>
                                     <field name="control_count"/>
-                                    <field name="implemented_control_count"/>
+                                    <field name="implemented_control_count" optional="hide"/>
                                     <field name="state"/>
                                     <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                                     <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company" optional="hide"/>
@@ -96,7 +94,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="📄 Documents">
+                        <page string="📄 Documents" invisible="not document_ids">
                             <field name="document_ids">
                                 <list>
                                     <field name="name"/>
@@ -105,7 +103,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="📦 Products">
+                        <page string="📦 Products" invisible="not all_product_ids">
                             <field name="all_product_ids">
                                 <list>
                                     <field name="name"/>
@@ -128,7 +126,10 @@
                         </page>
                         
                         <page string="🛡️ Allowed Companies" name="allowed_companies">
-                          <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company"/>
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -149,12 +150,14 @@
                 <field name="issuing_body"/>
                 <field name="version"/>
                 <field name="parent_id" optional="show"/>
-                <field name="title"/>
+                <field name="title"/>                
+                <field name="description" width="250px" optional="hide"/>                
                 <field name="category_id"/>
                 <field name="standard_type"/>
                 <field name="effective_date"/>
                 <field name="state"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company" optional="hide"/>
             </list>
         </field>
     </record>
@@ -164,16 +167,23 @@
         <field name="name">mgmtsystem.standard.list</field>
         <field name="model">mgmtsystem.standard</field>
         <field name="arch" type="xml">
-            <list string="Standards Hierarchy" decoration-muted="state == 'withdrawn'" decoration-bf="state == 'active'">
+            <list string="Standards Hierarchy" 
+                decoration-warning="state == 'draft'"
+                decoration-info="state in ['review', 'implementing']"
+                decoration-success="state in ['approved','active']"
+                decoration-primary="state == 'implementing'"
+                decoration-muted="state in ['retired', 'ineffective','withdrawn']"
+                >
                 <field name="external_id" groups="base.group_system" optional="hide"/>
                 <field name="code" optional="hide"/>
                 <field name="name"/>
                 <field name="issuing_body"/>
                 <field name="version"/>
-                <field name="title"/>
+                <field name="title" width="250px"/>
                 <field name="standard_type"/>
                 <field name="state"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company" optional="hide"/>
             </list>
         </field>
     </record>
@@ -291,12 +301,12 @@
 
     <!-- Menu Items -->
     <menuitem id="menu_mgmtsystem_standards_root"
-              name="Standards"
+              name="📋 Standards"
               parent="mgmtsystem.menu_mgmtsystem_root"
               sequence="30"/>
 
     <menuitem id="menu_mgmtsystem_standards"
-              name="Standards"
+              name="📋 Standards"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard"
               sequence="10"/>

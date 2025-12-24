@@ -27,7 +27,6 @@
                             <field name="reference" />
                             <field name="standard_id"/>
                             <field name="parent_id"  domain="[('standard_id', '=', standard_id)]"/>
-                            <field name="sequence"/>
                         </group>
                         <group>
                             <field name ="company_id" context="{'show_company': True}"/>
@@ -61,23 +60,33 @@
                             </field>
                         </page>
                         <page string="👥 Child Domains ( )">
-                            <field name="child_ids">
-                                <list>
+                            <field name="child_ids" domain="[('sequence', '=', 10)]">
+                                <list 
+                                    decoration-warning="state == 'draft'"
+                                    decoration-info="state in ['review', 'implementing']"
+                                    decoration-success="state == 'approved'"
+                                    decoration-primary="state == 'implementing'"
+                                    decoration-muted="state in ['retired', 'ineffective']"
+
+                                    >
                                     <field name="reference"/>
                                     <field name="name"/>
-                                    <field name="title"/>
-                                    <field name="description"/>
+                                    <field name="title" optional="hide"/>
+                                    <field name="description" optional="hide"/>
+                                    <field name="control_count"/>
                                     <field name="state"/>
+
                                 </list>
                             </field>
                         </page>
                         <page string="👥 Domain Controls" invisible="control_ids == []">
                             <field name="control_ids">
                                 <list
-                                    decoration-muted="state == 'retired'" 
-                                    decoration-danger="state == 'ineffective'" 
-                                    decoration-success="state == 'verified'" 
+                                    decoration-warning="state == 'draft'"
+                                    decoration-info="state in ['review', 'implementing']"
+                                    decoration-success="state == 'approved'"
                                     decoration-primary="state == 'implementing'"
+                                    decoration-muted="state in ['retired', 'ineffective']"
                                     >
                                     <field name="reference"/>
                                     <field name="name"/>
@@ -88,7 +97,10 @@
                         </page>
                         
                         <page string="🛡️ Allowed Companies" name="allowed_companies">
-                          <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company"/>
+                            <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -141,6 +153,9 @@
                 <field name="standard_id"/>
                 <field name="parent_id"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Path Level 1" name="path_level_1" domain="[('path_level', '=', 1)]"/>
+                <separator/>
                 <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="In Review" name="review" domain="[('state', '=', 'review')]"/>
                 <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
@@ -211,6 +226,7 @@
         <field name="res_model">mgmtsystem.standard.domain</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="search_view_id" ref="view_mgmtsystem_standard_domain_search"/>
+        <field name="context">{"search_default_path_level_1": 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first Standard Domain
@@ -225,7 +241,7 @@
 
     <!-- Menu Items -->
     <menuitem id="menu_mgmtsystem_standard_domains"
-              name="Domains"
+              name="🏗️ Domains"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_domain"
               sequence="25"/>

@@ -86,6 +86,17 @@ class StandardControl(models.Model):
         help="The expected value or outcome of this control"
     )
 
+    default_value = fields.Char(
+        string="Default Value",
+        help="The default value of this control"
+    )  
+
+    external_references = fields.Text( 
+        string="External References",
+        help="References to external documents or sources related to this control"
+    )
+
+
     # CIS Controls
 
     # odoo list sequence

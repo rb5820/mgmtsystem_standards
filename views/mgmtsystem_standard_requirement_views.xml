@@ -147,7 +147,7 @@
 
     <!-- Menu Items -->
     <menuitem id="menu_mgmtsystem_standard_requirements"
-              name="Requirements"
+              name="📝 Requirements"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_requirement"
               sequence="30"/>

@@ -133,6 +133,12 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="🛡️ Allowed Companies" name="allowed_companies">
+                            <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>
@@ -181,6 +187,9 @@
                 <field name="automated_check_result" optional="hide"/>
                 <field name="test_frequency" optional="hide"/>
                 <field name="description" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company" optional="hide"/>
+
             </list>
         </field>
     </record>
@@ -288,7 +297,7 @@
 
     <!-- Menu Items -->
     <menuitem id="menu_mgmtsystem_standard_controls"
-              name="Controls"
+              name="🔧 Controls"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_control"
               sequence="40"/>
@@ -297,7 +306,7 @@
     <!-- Report Menu Item -->   
     
     <menuitem id="menu_report_standard_control"
-        name="Standard Control Report"
+        name="📊 Standard Control Report"
         parent="menu_mgmtsystem_standards_root"
         action="action_report_standard_control"
         sequence="50"/>

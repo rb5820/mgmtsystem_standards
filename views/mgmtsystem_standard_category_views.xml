@@ -106,8 +106,8 @@
 
     <!-- Menu Items -->
     <menuitem id="menu_mgmtsystem_standard_categories"
-              name="Standard Categories"
+              name="📂 Standard Categories"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_category"
-              sequence="20"/>
+              sequence="70"/>
 </odoo>

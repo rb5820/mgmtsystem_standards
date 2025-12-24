@@ -22,6 +22,10 @@ class StandardAssessmentTool(models.Model):
     tool_url = fields.Char(string='Tool URL', help='URL for the assessment tool or integration.')
     tool_instructions = fields.Text(string='Tool Instructions', help='Instructions for using the assessment tool.')
 
+    vendor = fields.Char(string='Vendor', help='Vendor or provider of the assessment tool.')
+    version = fields.Char(string='Version', help='Version of the assessment tool.')
+    documentation_url = fields.Char(string='Documentation Link', help='Link to the tool documentation or user guide.')
+
     # Relationships
     # This field links the assessment tool to a specific control in the management system standards.
     # It is not required to ensure flexibility in tool usage.
