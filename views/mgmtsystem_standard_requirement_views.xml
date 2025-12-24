@@ -94,6 +94,20 @@
                 <field name="compliance_status"/>
                 <field name="priority" widget="priority"/>
                 <field name="responsible_id"/>
+                <!-- Additional fields available with optional='hide' -->
+                <field name="title" optional="hide"/>
+                <field name="code" optional="hide"/>
+                <field name="description" optional="hide"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="child_ids" optional="hide"/>
+                <field name="parent_path" optional="hide"/>
+                <field name="implementation_evidence" optional="hide"/>
+                <field name="compliance_notes" optional="hide"/>
+                <field name="document_ids" optional="hide"/>
+                <field name="audit_question_ids" optional="hide"/>
+                <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                <field name="active" optional="hide"/>
+                <field name="color" optional="hide"/>
             </list>
         </field>
     </record>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Multi-Company Record Rules for Management System Standards -->
+
+        <!-- Standards: Multi-Company Access Rules -->
+        <record id="mgmtsystem_standard_comp_rule" model="ir.rule">
+            <field name="name">Standards: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Domains: Multi-Company Access Rules -->
+        <record id="mgmtsystem_standard_domain_comp_rule" model="ir.rule">
+            <field name="name">Standard Domains: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_domain"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Controls: Multi-Company Access Rules -->
+        <record id="mgmtsystem_standard_control_comp_rule" model="ir.rule">
+            <field name="name">Standard Controls: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_control"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Requirements: Multi-Company Access Rules (via standard relationship) -->
+        <record id="mgmtsystem_standard_requirement_comp_rule" model="ir.rule">
+            <field name="name">Standard Requirements: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_requirement"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Categories: Multi-Company Access Rules -->
+        <record id="mgmtsystem_standard_category_comp_rule" model="ir.rule">
+            <field name="name">Standard Categories: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_category"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Certifications: Multi-Company Access Rules -->
+        <record id="mgmtsystem_standard_certification_comp_rule" model="ir.rule">
+            <field name="name">Standard Certifications: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_certification"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Zones: Multi-Company Access Rules (via standard relationship) -->
+        <record id="mgmtsystem_standard_zone_comp_rule" model="ir.rule">
+            <field name="name">Standard Zones: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_zone"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Assessment Tools: Multi-Company Access Rules -->
+        <record id="mgmtsystem_standard_assessment_tool_comp_rule" model="ir.rule">
+            <field name="name">Assessment Tools: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_control_assessment_tool"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Audit Questions: Multi-Company Access Rules (via requirement relationship) -->
+        <record id="mgmtsystem_standard_audit_question_comp_rule" model="ir.rule">
+            <field name="name">Audit Questions: Multi-Company Rule</field>
+            <field name="model_id" ref="model_mgmtsystem_standard_audit_question"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+    </data>
+</odoo>

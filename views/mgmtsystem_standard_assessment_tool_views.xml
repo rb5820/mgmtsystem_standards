@@ -7,8 +7,17 @@
                 <field name="name"/>
                 <field name="tool_type"/>
                 <field name="linked_control_ids"/>
-
                 <field name="company_id"/>
+                <!-- Additional fields available with optional='hide' -->
+                <field name="title" optional="hide"/>
+                <field name="description" optional="hide"/>
+                <field name="tool_url" optional="hide"/>
+                <field name="tool_instructions" optional="hide"/>
+                <field name="vendor" optional="hide"/>
+                <field name="version" optional="hide"/>
+                <field name="documentation_url" optional="hide"/>
+                <field name="control_id" optional="hide"/>
+                <field name="active" optional="hide"/>
             </list>
         </field>
     </record>

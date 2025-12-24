@@ -67,6 +67,14 @@
                 <field name="complete_name"/>
                 <field name="parent_id"/>
                 <field name="company_id" groups="base.group_multi_company"/>
+                <!-- Additional fields available with optional='hide' -->
+                <field name="title" optional="hide"/>
+                <field name="description" optional="hide"/>
+                <field name="child_ids" optional="hide"/>
+                <field name="parent_path" optional="hide"/>
+                <field name="standard_ids" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="color" optional="hide"/>
             </list>
         </field>
     </record>

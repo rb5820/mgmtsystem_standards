@@ -7,6 +7,7 @@ class StandardZone(models.Model):
     _description = 'Standard Security Zone'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'sequence, name'
+    _check_company_auto = True
 
     name = fields.Char(
         'Zone Name', 
@@ -49,6 +50,15 @@ class StandardZone(models.Model):
         'mgmtsystem.standard',
         string='Standard',
         help="The standard this zone belongs to"
+    )
+    
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        related='standard_id.company_id',
+        store=True,
+        readonly=True,
+        help='Company related to this zone through its standard'
     )
     
     # Related fields

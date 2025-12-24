@@ -138,6 +138,17 @@
                 <field name="state" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="color" optional="hide"/>
+                <field name="additional_information" optional="hide"/>
+                <field name="domain_requirements" optional="hide"/>
+                <field name="domain_rationale" optional="hide"/>
+                <field name="product_ids" optional="hide"/>
+                <field name="child_ids" optional="hide"/>
+                <field name="parent_path" optional="hide"/>
+                <field name="parent_left" optional="hide"/>
+                <field name="parent_right" optional="hide"/>
+                <field name="path_level" optional="hide"/>
             </list>
         </field>
     </record>

@@ -112,8 +112,15 @@ class StandardControl(models.Model):
     company_id = fields.Many2one(
         'res.company',
         string="Company",
-        readonly=True,
-        help="Company to which the domain belongs."
+        default=lambda self: self.env.company,
+        help="Company to which the control belongs."
+    )
+
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        default=lambda self: self.env.user.company_id,
+        help="List of allowed companies for this control"
     )
 
     additional_information = fields.Text(

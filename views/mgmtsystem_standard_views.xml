@@ -156,6 +156,25 @@
                 <field name="standard_type"/>
                 <field name="effective_date"/>
                 <field name="state"/>
+                <field name="scope" optional="hide"/>
+                <field name="publication_date" optional="hide"/>
+                <field name="expiry_date" optional="hide"/>
+                <field name="documentation_url" optional="hide"/>
+                <field name="internal_documentation_url" optional="hide"/>
+                <field name="documentation_filename" optional="hide"/>
+                <field name="internal_documentation_file" optional="hide"/>
+                <field name="parent_path" optional="hide"/>
+                <field name="child_ids" optional="hide"/>
+                <field name="parent_left" optional="hide"/>
+                <field name="parent_right" optional="hide"/>
+                <field name="control_count" optional="hide"/>
+                <!-- <field name="domain_count" optional="hide"/> -->
+                <!-- <field name="requirement_count" optional="hide"/> -->
+                <field name="last_assessment_date" optional="hide"/>
+                <field name="next_assessment_date" optional="hide"/>
+                <field name="compliance_score" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="color" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company" optional="hide"/>
             </list>
@@ -182,6 +201,28 @@
                 <field name="title" width="250px"/>
                 <field name="standard_type"/>
                 <field name="state"/>
+                <field name="category_id" optional="hide"/>
+                <field name="description" optional="hide"/>
+                <field name="scope" optional="hide"/>
+                <field name="publication_date" optional="hide"/>
+                <field name="effective_date" optional="hide"/>
+                <field name="expiry_date" optional="hide"/>
+                <field name="documentation_url" optional="hide"/>
+                <field name="internal_documentation_url" optional="hide"/>
+                <field name="documentation_filename" optional="hide"/>
+                <field name="internal_documentation_file" optional="hide"/>
+                <field name="parent_path" optional="hide"/>
+                <field name="child_ids" optional="hide"/>
+                <field name="parent_left" optional="hide"/>
+                <field name="parent_right" optional="hide"/>
+                <field name="control_count" optional="hide"/>
+                <!-- <field name="domain_count" optional="hide"/> -->
+                <!-- <field name="requirement_count" optional="hide"/> -->
+                <field name="last_assessment_date" optional="hide"/>
+                <field name="next_assessment_date" optional="hide"/>
+                <field name="compliance_score" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="color" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company" optional="hide"/>
             </list>

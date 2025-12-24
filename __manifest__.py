@@ -16,7 +16,9 @@
         'product',
     ],
     'data': [
+        'security/security_groups.xml',
         'security/ir.model.access.csv',
+        'security/ir_rule.xml',
         # Report
         'reports/report_standard_control.xml',
         'views/report_standard_control.xml',

@@ -19,6 +19,26 @@
                 <field name="state"/>
                 <field name="compliance_percentage" widget="percentage"/>
                 <field name="active" invisible="1"/>
+                <!-- Additional fields available with optional='hide' -->
+                <field name="control_id" optional="hide"/>
+                <field name="description" optional="hide"/>
+                <field name="rationale_statement" optional="hide"/>
+                <field name="impact_statement" optional="hide"/>
+                <field name="remediation_procedure" optional="hide"/>
+                <field name="audit_procedure" optional="hide"/>
+                <field name="additional_information" optional="hide"/>
+                <field name="default_value" optional="hide"/>
+                <field name="references" optional="hide"/>
+                <field name="cis_controls" optional="hide"/>
+                <field name="cis_safeguards_v8_ig1" optional="hide"/>
+                <field name="cis_safeguards_v8_ig2" optional="hide"/>
+                <field name="cis_safeguards_v8_ig3" optional="hide"/>
+                <field name="cis_safeguards_v7_ig1" optional="hide"/>
+                <field name="cis_safeguards_v7_ig2" optional="hide"/>
+                <field name="cis_safeguards_v7_ig3" optional="hide"/>
+                <field name="profile" optional="hide"/>
+                <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                <field name="section_number" optional="hide"/>
             </list>
         </field>
     </record>

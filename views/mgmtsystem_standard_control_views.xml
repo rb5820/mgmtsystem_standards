@@ -187,6 +187,29 @@
                 <field name="automated_check_result" optional="hide"/>
                 <field name="test_frequency" optional="hide"/>
                 <field name="description" optional="hide"/>
+                <field name="title" optional="hide"/>
+                <field name="rationale" optional="hide"/>
+                <field name="impact" optional="hide"/>
+                <field name="remediation" optional="hide"/>
+                <field name="audit" optional="hide"/>
+                <field name="expected_value" optional="hide"/>
+                <field name="default_value" optional="hide"/>
+                <field name="external_references" optional="hide"/>
+                <field name="sequence" optional="hide"/>
+                <field name="additional_information" optional="hide"/>
+                <field name="implementation_details" optional="hide"/>
+                <field name="test_procedure" optional="hide"/>
+                <field name="last_assessment_date" optional="hide"/>
+                <field name="maintenance_time" optional="hide"/>
+                <field name="maintenance_cost" optional="hide"/>
+                <field name="test_count" optional="hide"/>
+                <field name="action_count" optional="hide"/>
+                <field name="approval_date" optional="hide"/>
+                <field name="retirement_date" optional="hide"/>
+                <field name="approver_id" optional="hide"/>
+                <field name="verifier_id" optional="hide"/>
+                <field name="document_ids" optional="hide"/>
+                <field name="assessment_tools" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="allowed_company_ids" widget="many2many_tags" context="{'default_company_id': company_id}" groups="base.group_multi_company" optional="hide"/>
 

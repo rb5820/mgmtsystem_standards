@@ -13,6 +13,7 @@ class MgmtSystemStandardCategory(models.Model):
     _order = "name"
     _parent_name = "parent_id"
     _parent_store = True
+    _check_company_auto = True
 
     name = fields.Char(
         string='Category',
