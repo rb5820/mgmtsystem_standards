@@ -111,6 +111,20 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="💰 Cost Information">
+                            <group>
+                                <group string="Control Statistics">
+                                    <field name="standard_control_count"/>
+                                    <field name="control_count"/>
+                                    <field name="implemented_control_count"/>
+                                </group>
+                                <group string="Cost Totals">
+                                    <field name="standard_total_implementation_cost"/>
+                                    <field name="standard_total_maintenance_cost_manual"/>
+                                    <field name="standard_total_maintenance_cost_combined"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="⚠️ Superseded Information" invisible="state != 'superseded'">
                             <group>
                                 <field name="superseded_by_id" required="state == 'superseded'"/>

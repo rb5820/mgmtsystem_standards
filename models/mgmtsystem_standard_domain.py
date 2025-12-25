@@ -182,6 +182,31 @@ class StandardDomain(models.Model):
         help="Priority of this domain for implementation"
     )
 
+    # Domain Cost Information
+    domain_total_maintenance_cost_manual = fields.Float(
+        string='Total Maintenance Cost (Manual Only)',
+        compute='_compute_domain_costs',
+        help='Total annual maintenance cost for all controls in this domain (manual only)'
+    )
+    
+    domain_total_maintenance_cost_combined = fields.Float(
+        string='Total Maintenance Cost (Manual + Automated)',
+        compute='_compute_domain_costs',
+        help='Total annual maintenance cost for all controls in this domain (manual + automated)'
+    )
+    
+    domain_total_implementation_cost = fields.Float(
+        string='Total Implementation Cost',
+        compute='_compute_domain_costs',
+        help='Total implementation cost for all controls in this domain'
+    )
+    
+    domain_control_count = fields.Integer(
+        string='Control Count',
+        compute='_compute_domain_costs',
+        help='Number of controls in this domain'
+    )
+
 
     company_id = fields.Many2one(
         'res.company',
@@ -264,6 +289,23 @@ class StandardDomain(models.Model):
             
             # Count direct child domains only (immediate children)
             record.child_domain_count = len(record.child_ids)
+    
+    @api.depends('control_ids', 'control_ids.maintenance_cost', 'control_ids.maintenance_cost_combined', 'control_ids.implementation_cost')
+    def _compute_domain_costs(self):
+        """Compute cost statistics for all controls in this domain"""
+        for record in self:
+            # Get all descendant domains using parent_path for efficiency
+            descendant_domains = record._get_all_descendant_domains()
+            
+            # Get all controls from this domain and all descendants
+            all_controls = record.env['mgmtsystem.standard.control'].search([
+                ('domain_id', 'in', descendant_domains.ids + [record.id])
+            ])
+            
+            record.domain_control_count = len(all_controls)
+            record.domain_total_maintenance_cost_manual = sum(all_controls.mapped('maintenance_cost'))
+            record.domain_total_maintenance_cost_combined = sum(all_controls.mapped('maintenance_cost_combined'))
+            record.domain_total_implementation_cost = sum(all_controls.mapped('implementation_cost'))
     
     def _get_all_descendant_domains(self):
         """Get all descendant domains efficiently using parent_path"""

@@ -21,7 +21,7 @@
                     <p><strong>Not Required:</strong> <span t-esc="control.is_required"/></p>
                     <p><strong>Effectiveness Score:</strong> <span t-esc="control.effectiveness_score"/></p>
                     <p><strong>Last Assessment Date:</strong> <span t-esc="control.last_assessment_date"/></p>
-                    <p><strong>Implementation Time (hours):</strong> <span t-esc="control.implementation_time"/></p>
+                    <p><strong>Implementation Time (minutes):</strong> <span t-esc="control.implementation_time"/></p>
                     <p><strong>Implementation Cost:</strong> <span t-esc="control.implementation_cost"/></p>
                     <p><strong>Maintenance Time (minutes):</strong> <span t-esc="control.maintenance_time"/></p>
                     <p><strong>Maintenance Cost:</strong> <span t-esc="control.maintenance_cost"/></p>

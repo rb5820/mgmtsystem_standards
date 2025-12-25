@@ -210,10 +210,76 @@ class StandardControl(models.Model):
     # Effectiveness Metrics
     effectiveness_score = fields.Float('Effectiveness Score', compute='_compute_effectiveness_score')
     last_assessment_date = fields.Date('Last Assessment Date')
-    implementation_time = fields.Float('Implementation Time (hours)', help="Estimated time to implement this control")
+    implementation_time = fields.Float('Implementation Time (minutes)', help="Estimated time to implement this control in minutes")
     implementation_cost = fields.Float('Implementation Cost')
-    maintenance_time = fields.Float('Maintenance Time (minutes) per test frequency', help="Estimated time to maintain this control per test frequency")
-    maintenance_cost = fields.Float('Annual Maintenance Cost')
+    maintenance_time = fields.Float('Manual Test Timing', default=7.5, help="Time in minutes required to maintain/test this control per test cycle")
+    maintenance_cost = fields.Float('Annual Maintenance Cost (Manual Only)', 
+                                   compute='_compute_maintenance_cost_manual_only',
+                                   help="Annual maintenance cost for manual testing only")
+    
+    maintenance_cost_combined = fields.Float('Annual Maintenance Cost (Manual + Automated)', 
+                                           compute='_compute_maintenance_cost_combined',
+                                           help="Annual maintenance cost for manual and automated testing combined")
+    
+    # Base hourly rate for cost calculations
+    hourly_rate = fields.Float('Hourly Rate', default=1.0, help="Hourly rate for cost calculations")
+    
+    
+    # Enhanced Cost and Time Calculations (in minutes)
+    implementation_hours = fields.Float(
+        string='Implementation Hours', 
+        compute='_compute_implementation_hours',
+        help='Implementation time converted to hours (read-only)'
+    )
+    
+    total_annual_maintenance_time = fields.Float(
+        string='Total Annual Maintenance Time (minutes)',
+        compute='_compute_total_annual_maintenance_time',
+        help='Total maintenance time per year based on test frequency'
+    )
+    
+    total_annual_maintenance_hours = fields.Float(
+        string='Total Annual Maintenance Hours',
+        compute='_compute_total_annual_maintenance_hours', 
+        help='Total maintenance hours per year'
+    )
+    
+    cost_per_minute = fields.Float(
+        string='Cost per Minute',
+        compute='_compute_cost_per_minute',
+        help='Implementation cost divided by implementation time'
+    )
+    
+    total_first_year_cost = fields.Float(
+        string='Total First Year Cost',
+        compute='_compute_total_first_year_cost',
+        help='Implementation cost plus first year maintenance cost'
+    )
+    
+    # Domain and Standard Level Cost Aggregations
+    domain_total_maintenance_cost_manual = fields.Float(
+        string='Domain Total (Manual Only)',
+        compute='_compute_domain_totals',
+        help='Total annual maintenance cost for all controls in this domain (manual only)'
+    )
+    
+    domain_total_maintenance_cost_combined = fields.Float(
+        string='Domain Total (Manual + Automated)',
+        compute='_compute_domain_totals', 
+        help='Total annual maintenance cost for all controls in this domain (manual + automated)'
+    )
+    
+    standard_total_maintenance_cost_manual = fields.Float(
+        string='Standard Total (Manual Only)',
+        compute='_compute_standard_totals',
+        help='Total annual maintenance cost for all controls in this standard (manual only)'
+    )
+    
+    standard_total_maintenance_cost_combined = fields.Float(
+        string='Standard Total (Manual + Automated)',
+        compute='_compute_standard_totals',
+        help='Total annual maintenance cost for all controls in this standard (manual + automated)'
+    )
     
     # Testing and Verification
     test_frequency = fields.Selection([
@@ -221,7 +287,8 @@ class StandardControl(models.Model):
         ('quarterly', 'Quarterly'),
         ('semi_annual', 'Semi-Annual'),
         ('annual', 'Annual')
-    ], string='Test Frequency')
+    ], string='Test Frequency', default='annual',
+    help='How often this control should be tested/maintained')
     last_test_date = fields.Date('Last Test Date')
     next_test_date = fields.Date('Next Test Date', compute='_compute_next_test_date')
     # Commenting out references to non-existent model to avoid errors
@@ -286,6 +353,129 @@ class StandardControl(models.Model):
     # )
     control_owner_id = fields.Many2one('res.users', string='Control Owner')
     document_ids = fields.Many2many('ir.attachment', string='Documentation')
+    
+    # Cost and Time Calculation Methods
+    @api.depends('implementation_time')
+    def _compute_implementation_hours(self):
+        """Convert implementation time from minutes to hours"""
+        for record in self:
+            record.implementation_hours = record.implementation_time / 60.0 if record.implementation_time else 0.0
+    
+    @api.depends('maintenance_time', 'test_frequency')
+    def _compute_total_annual_maintenance_time(self):
+        """Calculate total annual maintenance time based on test frequency"""
+        frequency_multipliers = {
+            'monthly': 12,
+            'quarterly': 4,
+            'semi_annual': 2, 
+            'annual': 1
+        }
+        
+        for record in self:
+            if record.maintenance_time and record.test_frequency:
+                multiplier = frequency_multipliers.get(record.test_frequency, 1)
+                record.total_annual_maintenance_time = record.maintenance_time * multiplier
+            else:
+                record.total_annual_maintenance_time = 0.0
+    
+    @api.depends('total_annual_maintenance_time')
+    def _compute_total_annual_maintenance_hours(self):
+        """Convert total annual maintenance time from minutes to hours"""
+        for record in self:
+            record.total_annual_maintenance_hours = record.total_annual_maintenance_time / 60.0 if record.total_annual_maintenance_time else 0.0
+    
+    @api.depends('maintenance_time', 'test_frequency', 'hourly_rate')
+    def _compute_maintenance_cost_manual_only(self):
+        """Calculate annual maintenance cost for manual testing only"""
+        frequency_multipliers = {
+            'monthly': 12,
+            'quarterly': 4,
+            'semi_annual': 2, 
+            'annual': 1
+        }
+        
+        for record in self:
+            if record.maintenance_time and record.test_frequency and record.hourly_rate:
+                multiplier = frequency_multipliers.get(record.test_frequency, 1)
+                annual_minutes = record.maintenance_time * multiplier
+                annual_hours = annual_minutes / 60.0
+                record.maintenance_cost = annual_hours * record.hourly_rate
+            else:
+                record.maintenance_cost = 0.0
+    
+    @api.depends('maintenance_time', 'automated_test_timing', 'test_frequency', 'hourly_rate')
+    def _compute_maintenance_cost_combined(self):
+        """Calculate annual maintenance cost for manual and automated testing combined"""
+        frequency_multipliers = {
+            'monthly': 12,
+            'quarterly': 4,
+            'semi_annual': 2, 
+            'annual': 1
+        }
+        
+        for record in self:
+            if record.test_frequency and record.hourly_rate:
+                multiplier = frequency_multipliers.get(record.test_frequency, 1)
+                manual_minutes = (record.maintenance_time or 0.0) * multiplier
+                automated_minutes = (record.automated_test_timing or 0.0) / 60.0 * multiplier  # Convert seconds to minutes
+                total_annual_minutes = manual_minutes + automated_minutes
+                total_annual_hours = total_annual_minutes / 60.0
+                record.maintenance_cost_combined = total_annual_hours * record.hourly_rate
+            else:
+                record.maintenance_cost_combined = 0.0
+    
+    @api.depends('implementation_cost', 'implementation_time')
+    def _compute_cost_per_minute(self):
+        """Calculate cost per minute of implementation"""
+        for record in self:
+            if record.implementation_time and record.implementation_cost:
+                record.cost_per_minute = record.implementation_cost / record.implementation_time
+            else:
+                record.cost_per_minute = 0.0
+    
+    @api.depends('implementation_cost', 'maintenance_cost')
+    def _compute_total_first_year_cost(self):
+        """Calculate total first year cost (implementation + maintenance)"""
+        for record in self:
+            record.total_first_year_cost = (record.implementation_cost or 0.0) + (record.maintenance_cost or 0.0)
+    
+    @api.depends('domain_id', 'maintenance_cost', 'maintenance_cost_combined')
+    def _compute_domain_totals(self):
+        """Calculate domain-level cost totals"""
+        for record in self:
+            if record.domain_id:
+                domain_controls = self.search([('domain_id', '=', record.domain_id.id)])
+                record.domain_total_maintenance_cost_manual = sum(domain_controls.mapped('maintenance_cost'))
+                record.domain_total_maintenance_cost_combined = sum(domain_controls.mapped('maintenance_cost_combined'))
+            else:
+                record.domain_total_maintenance_cost_manual = 0.0
+                record.domain_total_maintenance_cost_combined = 0.0
+    
+    @api.depends('standard_id', 'maintenance_cost', 'maintenance_cost_combined')
+    def _compute_standard_totals(self):
+        """Calculate standard-level cost totals"""
+        for record in self:
+            if record.standard_id:
+                standard_controls = self.search([('standard_id', '=', record.standard_id.id)])
+                record.standard_total_maintenance_cost_manual = sum(standard_controls.mapped('maintenance_cost'))
+                record.standard_total_maintenance_cost_combined = sum(standard_controls.mapped('maintenance_cost_combined'))
+            else:
+                record.standard_total_maintenance_cost_manual = 0.0
+                record.standard_total_maintenance_cost_combined = 0.0
+    
+    # Override maintenance_time field to provide better labeling
+    maintenance_time = fields.Float(
+        string='Manual Test Timing',
+        default=7.5,
+        help='Time in minutes required to maintain/test this control per test cycle'
+    )
+    
+    # Automated assessment timing
+    automated_test_timing = fields.Float(
+        string='Automated Test Timing (seconds)',
+        default=3.0,
+        help='Time in seconds required for automated assessment of this control'
+    )
     
     # Automated Assessment
     automated_assessment = fields.Boolean('Automated Assessment')

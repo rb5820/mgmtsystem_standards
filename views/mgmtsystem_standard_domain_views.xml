@@ -48,7 +48,21 @@
                         <page string="📝 Additional Information">
                             <field name="additional_information" placeholder="Add any additional information..."/>
                         </page>
-                        <page string="📦 Related Products" invisible="not product_ids">
+                        <page string="� Cost Information">
+                            <group>
+                                <group string="Control Statistics">
+                                    <field name="domain_control_count"/>
+                                    <field name="control_count"/>
+                                    <field name="implemented_control_count"/>
+                                </group>
+                                <group string="Cost Totals">
+                                    <field name="domain_total_implementation_cost"/>
+                                    <field name="domain_total_maintenance_cost_manual"/>
+                                    <field name="domain_total_maintenance_cost_combined"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="�📦 Related Products" invisible="not product_ids">
                             <field name="product_ids">
                                 <list>
                                     <field name="default_code"/>

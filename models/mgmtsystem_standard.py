@@ -240,6 +240,31 @@ class MgmtSystemStandard(models.Model):
         help="Companies that can access this standard"
     )
 
+    # Standard Cost Information
+    standard_total_maintenance_cost_manual = fields.Float(
+        string='Total Maintenance Cost (Manual Only)',
+        compute='_compute_standard_costs',
+        help='Total annual maintenance cost for all controls in this standard (manual only)'
+    )
+    
+    standard_total_maintenance_cost_combined = fields.Float(
+        string='Total Maintenance Cost (Manual + Automated)',
+        compute='_compute_standard_costs',
+        help='Total annual maintenance cost for all controls in this standard (manual + automated)'
+    )
+    
+    standard_total_implementation_cost = fields.Float(
+        string='Total Implementation Cost',
+        compute='_compute_standard_costs',
+        help='Total implementation cost for all controls in this standard'
+    )
+    
+    standard_control_count = fields.Integer(
+        string='Total Control Count',
+        compute='_compute_standard_costs',
+        help='Total number of controls in this standard'
+    )
+
     # Compliance tracking
 
     # Statistics for dashboard
@@ -342,6 +367,21 @@ class MgmtSystemStandard(models.Model):
             record.implemented_control_count = len(all_controls.filtered(
                 lambda c: c.implemented
             ))
+    
+    @api.depends('domain_ids', 'domain_ids.control_ids', 'domain_ids.control_ids.maintenance_cost', 
+                 'domain_ids.control_ids.maintenance_cost_combined', 'domain_ids.control_ids.implementation_cost')
+    def _compute_standard_costs(self):
+        """Compute cost statistics for all controls in this standard"""
+        for record in self:
+            # Get all controls linked to this standard through domains
+            all_controls = self.env['mgmtsystem.standard.control'].search([
+                ('standard_id', '=', record.id)
+            ])
+            
+            record.standard_control_count = len(all_controls)
+            record.standard_total_maintenance_cost_manual = sum(all_controls.mapped('maintenance_cost'))
+            record.standard_total_maintenance_cost_combined = sum(all_controls.mapped('maintenance_cost_combined'))
+            record.standard_total_implementation_cost = sum(all_controls.mapped('implementation_cost'))
     
     @api.depends('name', 'version')
     def _compute_code(self):
