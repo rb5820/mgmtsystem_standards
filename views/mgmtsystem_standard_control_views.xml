@@ -98,15 +98,19 @@
                         </page>
                         <page string="💰 Cost Information">
                             <group>
-                                <group>
+                                <group string="Implementation">
                                     <field name="implementation_time"/>
-                                </group>
-                                <group>
                                     <field name="implementation_cost"/>
                                     <field name="hourly_rate"/>
                                 </group>
-                                <group>
+                                <group string="Annual Maintenance (Manual Only)">
+                                    <field name="total_annual_maintenance_time"/>
+                                    <field name="total_annual_maintenance_hours"/>
                                     <field name="maintenance_cost"/>
+                                </group>
+                                <group string="Annual Maintenance (Combined)">
+                                    <field name="total_annual_maintenance_time_combined"/>
+                                    <field name="total_annual_maintenance_hours_combined"/>
                                     <field name="maintenance_cost_combined"/>
                                 </group>
                             </group>

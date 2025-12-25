@@ -259,6 +259,31 @@ class MgmtSystemStandard(models.Model):
         help='Total implementation cost for all controls in this standard'
     )
     
+    # Standard Time Information
+    standard_total_maintenance_time_manual = fields.Float(
+        string='Total Maintenance Time (Manual Only) - Minutes',
+        compute='_compute_standard_costs',
+        help='Total annual maintenance time for all controls in this standard (manual only, in minutes)'
+    )
+    
+    standard_total_maintenance_time_combined = fields.Float(
+        string='Total Maintenance Time (Combined) - Minutes',
+        compute='_compute_standard_costs',
+        help='Total annual maintenance time for all controls in this standard (using automation when available, in minutes)'
+    )
+    
+    standard_total_maintenance_hours_manual = fields.Float(
+        string='Total Maintenance Hours (Manual Only)',
+        compute='_compute_standard_costs',
+        help='Total annual maintenance time for all controls in this standard (manual only, in hours)'
+    )
+    
+    standard_total_maintenance_hours_combined = fields.Float(
+        string='Total Maintenance Hours (Combined)',
+        compute='_compute_standard_costs',
+        help='Total annual maintenance time for all controls in this standard (using automation when available, in hours)'
+    )
+    
     standard_control_count = fields.Integer(
         string='Total Control Count',
         compute='_compute_standard_costs',
@@ -369,9 +394,11 @@ class MgmtSystemStandard(models.Model):
             ))
     
     @api.depends('domain_ids', 'domain_ids.control_ids', 'domain_ids.control_ids.maintenance_cost', 
-                 'domain_ids.control_ids.maintenance_cost_combined', 'domain_ids.control_ids.implementation_cost')
+                 'domain_ids.control_ids.maintenance_cost_combined', 'domain_ids.control_ids.implementation_cost',
+                 'domain_ids.control_ids.total_annual_maintenance_time', 'domain_ids.control_ids.total_annual_maintenance_time_combined',
+                 'domain_ids.control_ids.total_annual_maintenance_hours', 'domain_ids.control_ids.total_annual_maintenance_hours_combined')
     def _compute_standard_costs(self):
-        """Compute cost statistics for all controls in this standard"""
+        """Compute cost and time statistics for all controls in this standard"""
         for record in self:
             # Get all controls linked to this standard through domains
             all_controls = self.env['mgmtsystem.standard.control'].search([
@@ -382,6 +409,12 @@ class MgmtSystemStandard(models.Model):
             record.standard_total_maintenance_cost_manual = sum(all_controls.mapped('maintenance_cost'))
             record.standard_total_maintenance_cost_combined = sum(all_controls.mapped('maintenance_cost_combined'))
             record.standard_total_implementation_cost = sum(all_controls.mapped('implementation_cost'))
+            
+            # Time calculations
+            record.standard_total_maintenance_time_manual = sum(all_controls.mapped('total_annual_maintenance_time'))
+            record.standard_total_maintenance_time_combined = sum(all_controls.mapped('total_annual_maintenance_time_combined'))
+            record.standard_total_maintenance_hours_manual = sum(all_controls.mapped('total_annual_maintenance_hours'))
+            record.standard_total_maintenance_hours_combined = sum(all_controls.mapped('total_annual_maintenance_hours_combined'))
     
     @api.depends('name', 'version')
     def _compute_code(self):

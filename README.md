@@ -24,6 +24,15 @@ The Management System Standards module is a comprehensive Odoo 18 application fo
 - **Compliance Monitoring**: Multi-level compliance status tracking with percentage indicators
 - **Evidence Management**: Document attachment and evidence linking capabilities
 
+### 💰 **Advanced Cost Tracking System** 🆕
+- **Minute-Level Precision**: Time tracking in minutes with automatic hour conversions
+- **Dual Cost Models**: Manual vs. Automated implementation scenarios
+- **Hierarchical Aggregation**: Costs roll up from Control → Domain → Standard levels
+- **ROI Analysis**: 99%+ cost reduction calculations for automation scenarios  
+- **Budget Planning**: Complete first-year cost projections with implementation and maintenance costs
+- **Time Management**: Separate tracking for implementation vs. ongoing maintenance activities
+- **Automation Benefits**: Quantifiable savings analysis when moving from manual to automated controls
+
 ### 🏆 **Certification & Assessment**
 - **Certification Tracking**: Monitor certification status and compliance percentages
 - **Assessment Integration**: Connect with external assessment tools and platforms
@@ -131,14 +140,14 @@ Management System > 🔧 Controls > Create
 ## 🛠️ Customization & Extension
 
 ### **Available Models**
-- `mgmtsystem.standard` - Core standards management
-- `mgmtsystem.standard.domain` - Security domains
-- `mgmtsystem.standard.control` - Control implementations  
-- `mgmtsystem.standard.requirement` - Requirements tracking
-- `mgmtsystem.standard.category` - Standard categorization
-- `mgmtsystem.standard.certification` - Certification management
-- `mgmtsystem.standard.zone` - Security zone grouping
-- `mgmtsystem.standard.assessment.tool` - Tool integrations
+- `mgmtsystem.standard` - Core standards management with cost aggregation
+- `mgmtsystem.standard.domain` - Security domains with domain-level cost rollups
+- `mgmtsystem.standard.control` - Control implementations with detailed cost/time tracking
+- `mgmtsystem.standard.requirement` - Requirements tracking and compliance
+- `mgmtsystem.standard.category` - Standard categorization (Quality, Security, Environmental)
+- `mgmtsystem.standard.certification` - Certification management and procedures
+- `mgmtsystem.standard.zone` - Security zone grouping for enterprise architecture
+- `mgmtsystem.standard.assessment.tool` - External tool integrations and automation
 
 ### **Extension Points**
 - Custom compliance reports via QWeb templates
@@ -170,12 +179,31 @@ Management System > 🔧 Controls > Create
 - Optimized search and filtering
 - Efficient company-based queries
 
-## 📋 Roadmap
-- [ ] Integration with external GRC platforms
-- [ ] Advanced analytics and dashboards  
-- [ ] Automated compliance monitoring
-- [ ] API endpoints for third-party integrations
-- [ ] Mobile app compatibility
+## 📋 Roadmap & Enhancement Opportunities
+
+### **High Priority (Quick Wins)**
+- [ ] Executive dashboards with compliance KPIs and cost analytics
+- [ ] Mobile field assessment app with offline capability  
+- [ ] Automated compliance workflows with approval processes
+- [ ] Enhanced cost reporting with budget vs. actual tracking
+
+### **Strategic Enhancements**
+- [ ] SIEM/Security tool integration for automated assessments
+- [ ] AI-powered control recommendations based on risk profiles
+- [ ] Integration with project management systems (tasks, timelines)
+- [ ] Multi-currency support for global organizations
+
+### **Advanced Features** 
+- [ ] Machine learning for predictive compliance analytics
+- [ ] Custom framework builder for proprietary standards
+- [ ] Advanced role-based access control with digital signatures
+- [ ] API framework for third-party compliance tool integrations
+
+### **Industry-Specific Extensions**
+- [ ] SOX compliance modules for financial reporting
+- [ ] GDPR/Privacy framework integration
+- [ ] Healthcare (HIPAA), Finance (PCI-DSS) specialized modules
+- [ ] Regional compliance frameworks (EU, APAC specific requirements)
 
 ## 🆘 Support & Contact
 
@@ -194,9 +222,9 @@ Management System > 🔧 Controls > Create
 
 ## 📄 License & Credits
 
-**Developed by EQUANS Team Energy Team**  
+**Developed by Team Energy Team**  
 *Version 18.0.1.0.0 - December 2025*
 
 This module is part of the EQUANS  Team Energy  Ecosystem for comprehensive management system automation and compliance tracking.
 
-**© 2025 EQUANS - All Rights Reserved**
+**© 2025 - All Rights Reserved**

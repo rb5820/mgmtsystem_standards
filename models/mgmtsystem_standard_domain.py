@@ -206,6 +206,31 @@ class StandardDomain(models.Model):
         compute='_compute_domain_costs',
         help='Number of controls in this domain'
     )
+    
+    # Domain Time Information
+    domain_total_maintenance_time_manual = fields.Float(
+        string='Total Maintenance Time (Manual Only - minutes)',
+        compute='_compute_domain_costs',
+        help='Total annual maintenance time for all controls in this domain (manual only)'
+    )
+    
+    domain_total_maintenance_time_combined = fields.Float(
+        string='Total Maintenance Time (Combined - minutes)',
+        compute='_compute_domain_costs',
+        help='Total annual maintenance time for all controls in this domain (automated when available)'
+    )
+    
+    domain_total_maintenance_hours_manual = fields.Float(
+        string='Total Maintenance Hours (Manual Only)',
+        compute='_compute_domain_costs',
+        help='Total annual maintenance hours for all controls in this domain (manual only)'
+    )
+    
+    domain_total_maintenance_hours_combined = fields.Float(
+        string='Total Maintenance Hours (Combined)',
+        compute='_compute_domain_costs',
+        help='Total annual maintenance hours for all controls in this domain (automated when available)'
+    )
 
 
     company_id = fields.Many2one(
@@ -290,9 +315,11 @@ class StandardDomain(models.Model):
             # Count direct child domains only (immediate children)
             record.child_domain_count = len(record.child_ids)
     
-    @api.depends('control_ids', 'control_ids.maintenance_cost', 'control_ids.maintenance_cost_combined', 'control_ids.implementation_cost')
+    @api.depends('control_ids', 'control_ids.maintenance_cost', 'control_ids.maintenance_cost_combined', 
+                 'control_ids.implementation_cost', 'control_ids.total_annual_maintenance_time',
+                 'control_ids.total_annual_maintenance_time_combined')
     def _compute_domain_costs(self):
-        """Compute cost statistics for all controls in this domain"""
+        """Compute cost and time statistics for all controls in this domain"""
         for record in self:
             # Get all descendant domains using parent_path for efficiency
             descendant_domains = record._get_all_descendant_domains()
@@ -306,6 +333,12 @@ class StandardDomain(models.Model):
             record.domain_total_maintenance_cost_manual = sum(all_controls.mapped('maintenance_cost'))
             record.domain_total_maintenance_cost_combined = sum(all_controls.mapped('maintenance_cost_combined'))
             record.domain_total_implementation_cost = sum(all_controls.mapped('implementation_cost'))
+            
+            # Time calculations
+            record.domain_total_maintenance_time_manual = sum(all_controls.mapped('total_annual_maintenance_time'))
+            record.domain_total_maintenance_time_combined = sum(all_controls.mapped('total_annual_maintenance_time_combined'))
+            record.domain_total_maintenance_hours_manual = record.domain_total_maintenance_time_manual / 60.0
+            record.domain_total_maintenance_hours_combined = record.domain_total_maintenance_time_combined / 60.0
     
     def _get_all_descendant_domains(self):
         """Get all descendant domains efficiently using parent_path"""

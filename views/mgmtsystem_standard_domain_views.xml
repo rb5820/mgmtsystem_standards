@@ -55,9 +55,17 @@
                                     <field name="control_count"/>
                                     <field name="implemented_control_count"/>
                                 </group>
-                                <group string="Cost Totals">
+                                <group string="Implementation Totals">
                                     <field name="domain_total_implementation_cost"/>
+                                </group>
+                                <group string="Annual Maintenance (Manual Only)">
+                                    <field name="domain_total_maintenance_time_manual"/>
+                                    <field name="domain_total_maintenance_hours_manual"/>
                                     <field name="domain_total_maintenance_cost_manual"/>
+                                </group>
+                                <group string="Annual Maintenance (Combined)">
+                                    <field name="domain_total_maintenance_time_combined"/>
+                                    <field name="domain_total_maintenance_hours_combined"/>
                                     <field name="domain_total_maintenance_cost_combined"/>
                                 </group>
                             </group>

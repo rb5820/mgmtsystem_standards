@@ -222,7 +222,7 @@ class StandardControl(models.Model):
                                            help="Annual maintenance cost for manual and automated testing combined")
     
     # Base hourly rate for cost calculations
-    hourly_rate = fields.Float('Hourly Rate', default=1.0, help="Hourly rate for cost calculations")
+    hourly_rate = fields.Float('Hourly Rate', default=100.0, help="Hourly rate for cost calculations")
     
     
     # Enhanced Cost and Time Calculations (in minutes)
@@ -242,6 +242,18 @@ class StandardControl(models.Model):
         string='Total Annual Maintenance Hours',
         compute='_compute_total_annual_maintenance_hours', 
         help='Total maintenance hours per year'
+    )
+    
+    total_annual_maintenance_time_combined = fields.Float(
+        string='Total Annual Maintenance Time (Combined - minutes)',
+        compute='_compute_total_annual_maintenance_time_combined',
+        help='Total maintenance time per year using automated when available, otherwise manual (minutes)'
+    )
+    
+    total_annual_maintenance_hours_combined = fields.Float(
+        string='Total Annual Maintenance Hours (Combined)',
+        compute='_compute_total_annual_maintenance_hours_combined',
+        help='Total maintenance hours per year using automated when available, otherwise manual'
     )
     
     cost_per_minute = fields.Float(
@@ -384,6 +396,38 @@ class StandardControl(models.Model):
         for record in self:
             record.total_annual_maintenance_hours = record.total_annual_maintenance_time / 60.0 if record.total_annual_maintenance_time else 0.0
     
+    @api.depends('maintenance_time', 'automated_test_timing', 'automated_assessment', 'test_frequency')
+    def _compute_total_annual_maintenance_time_combined(self):
+        """Calculate total annual maintenance time using automated when available, otherwise manual"""
+        frequency_multipliers = {
+            'monthly': 12,
+            'quarterly': 4,
+            'semi_annual': 2, 
+            'annual': 1
+        }
+        
+        for record in self:
+            if record.test_frequency:
+                multiplier = frequency_multipliers.get(record.test_frequency, 1)
+                
+                # Use automated testing if available and enabled, otherwise use manual
+                if record.automated_assessment and record.automated_test_timing:
+                    # Use only automated time (convert seconds to minutes)
+                    test_minutes = (record.automated_test_timing or 0.0) / 60.0
+                else:
+                    # Use manual time
+                    test_minutes = record.maintenance_time or 0.0
+                
+                record.total_annual_maintenance_time_combined = test_minutes * multiplier
+            else:
+                record.total_annual_maintenance_time_combined = 0.0
+    
+    @api.depends('total_annual_maintenance_time_combined')
+    def _compute_total_annual_maintenance_hours_combined(self):
+        """Convert combined total annual maintenance time from minutes to hours"""
+        for record in self:
+            record.total_annual_maintenance_hours_combined = record.total_annual_maintenance_time_combined / 60.0 if record.total_annual_maintenance_time_combined else 0.0
+    
     @api.depends('maintenance_time', 'test_frequency', 'hourly_rate')
     def _compute_maintenance_cost_manual_only(self):
         """Calculate annual maintenance cost for manual testing only"""
@@ -403,9 +447,9 @@ class StandardControl(models.Model):
             else:
                 record.maintenance_cost = 0.0
     
-    @api.depends('maintenance_time', 'automated_test_timing', 'test_frequency', 'hourly_rate')
+    @api.depends('maintenance_time', 'automated_test_timing', 'automated_assessment', 'test_frequency', 'hourly_rate')
     def _compute_maintenance_cost_combined(self):
-        """Calculate annual maintenance cost for manual and automated testing combined"""
+        """Calculate annual maintenance cost using automated testing when available, otherwise manual"""
         frequency_multipliers = {
             'monthly': 12,
             'quarterly': 4,
@@ -416,9 +460,16 @@ class StandardControl(models.Model):
         for record in self:
             if record.test_frequency and record.hourly_rate:
                 multiplier = frequency_multipliers.get(record.test_frequency, 1)
-                manual_minutes = (record.maintenance_time or 0.0) * multiplier
-                automated_minutes = (record.automated_test_timing or 0.0) / 60.0 * multiplier  # Convert seconds to minutes
-                total_annual_minutes = manual_minutes + automated_minutes
+                
+                # Use automated testing if available and enabled, otherwise use manual
+                if record.automated_assessment and record.automated_test_timing:
+                    # Use only automated time (convert seconds to minutes)
+                    test_minutes = (record.automated_test_timing or 0.0) / 60.0
+                else:
+                    # Use manual time
+                    test_minutes = record.maintenance_time or 0.0
+                
+                total_annual_minutes = test_minutes * multiplier
                 total_annual_hours = total_annual_minutes / 60.0
                 record.maintenance_cost_combined = total_annual_hours * record.hourly_rate
             else:
