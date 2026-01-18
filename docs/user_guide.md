@@ -1,29 +1,45 @@
-# User Guide - Management Systems Standards
+# 👤 User Guide - Management System Standards
 
-## Overview
+**Version**: 18.0.1.0.5 | **Target**: Business Users, Compliance Teams, Auditors
 
-The Management Systems Standards module provides comprehensive tools for managing compliance frameworks with advanced cost tracking capabilities.
+## 🎯 Overview
 
-## Navigation
+The Management System Standards module provides comprehensive tools for managing compliance frameworks (ISO 9001/14001/27001, CIS Controls, IEC 62443) with advanced cost tracking, multi-company support, and workflow integration.
 
-### Main Menus
-- **Standards**: Manage compliance frameworks (ISO 27001, NIST, CIS Controls)
-- **Domains**: Organize controls into logical categories
-- **Controls**: Individual security/compliance requirements with cost tracking
+## 🧭 Navigation & Access
 
-## Cost Management Features
+### Main Menu Structure
+Access via: **Apps → Management System → Standards** 
+
+```
+📋 Standards          # Main compliance frameworks
+├── 🏗️ Domains        # Security/compliance domains with filtering
+├── 📝 Controls       # Individual controls with cost tracking
+├── 📋 Requirements   # Detailed framework requirements  
+├── 🏆 Certifications # Assessment and certification tracking
+├── 📂 Categories     # Framework organization
+├── 🔧 Zones          # Logical control groupings
+├── 📊 Assessment Tools # External tool integration
+└── ❓ Audit Questions # Structured audit support
+```
+
+### Security Groups & Access Levels
+- **👁️ Viewer**: Read-only access to standards and controls
+- **👤 User**: Basic editing of controls and requirements
+- **🧪 Tester**: Assessment and testing capabilities
+- **👀 Reviewer**: Review and approval functions
+- **👑 Manager**: Full administrative access and cost configuration
+
+## 💰 Cost Management & ROI Analysis
 
 ### Setting Up Cost Tracking
 
-1. **Configure Hourly Rates**
-   - Navigate to a control record
-   - Go to "💰 Cost Information" tab
-   - Set appropriate hourly rate (default: $100.00)
-
-2. **Set Test Timing**
-   - **Manual Test Timing**: Time required for manual testing (default: 7.5 minutes)
-   - **Automated Test Timing**: Time for automated assessment (default: 3 seconds)
-   - **Test Frequency**: How often testing occurs (Monthly, Quarterly, Semi-Annual, Annual)
+1. **Configure Base Parameters**
+   - Navigate to any control record
+   - Go to "💰 Cost Information" tab  
+   - Set **Hourly Rate** (default: $100.00/hour)
+   - Define **Implementation Time** (minutes for initial setup)
+   - Set **Maintenance Time** (minutes for ongoing testing/maintenance)
 
 ### Understanding Cost Calculations
 

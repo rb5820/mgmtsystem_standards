@@ -121,6 +121,13 @@ class MgmtSystemStandardRequirement(models.Model):
         store=True,
         readonly=True
     )
+
+    # Remove complex many2many definition
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        help="Companies that can access this standard"
+    )
     
     active = fields.Boolean(
         default=True,
@@ -150,3 +157,22 @@ class MgmtSystemStandardRequirement(models.Model):
                 requirement.complete_code = '%s.%s' % (requirement.parent_id.complete_code, requirement.code)
             else:
                 requirement.complete_code = requirement.code
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Ensure company_id is always included in allowed_company_ids"""
+        records = super().create(vals_list)
+        for record in records:
+            if record.company_id and record.company_id not in record.allowed_company_ids:
+                record.allowed_company_ids = [(4, record.company_id.id)]
+        return records
+    
+    def write(self, vals):
+        """Ensure company_id is always included in allowed_company_ids when updated"""
+        result = super().write(vals)
+        # Check if either company_id or allowed_company_ids was modified
+        if 'company_id' in vals or 'allowed_company_ids' in vals:
+            for record in self:
+                if record.company_id and record.company_id not in record.allowed_company_ids:
+                    record.allowed_company_ids = [(4, record.company_id.id)]
+        return result

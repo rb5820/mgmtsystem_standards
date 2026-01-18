@@ -1,16 +1,46 @@
-# 🔧 Technical Reference Guide - Cost Enhancement Module
+# 🔧 Technical Reference Guide - Management System Standards
 
-## 📋 Field Definitions
+**Version**: 18.0.1.0.5 | **Module**: mgmtsystem_standards | **Dependencies**: base, mail, mgmtsystem, document_page, product
+
+## 📋 Model Architecture
+
+### Core Models Overview
+```python
+# Primary Models
+mgmtsystem.standard              # Standards framework (ISO, IEC, CIS, etc.)
+mgmtsystem.standard.domain       # Security domains with path filtering 
+mgmtsystem.standard.control      # Individual controls with cost tracking
+mgmtsystem.standard.requirement  # Hierarchical requirements
+mgmtsystem.standard.certification # Certification tracking
+mgmtsystem.standard.category     # Framework categorization
+mgmtsystem.standard.zone         # Logical groupings
+mgmtsystem.standard.assessment.tool # External tool integration
+mgmtsystem.standard.audit.question  # Audit question management
+mgmtsystem.notification.config   # Notification system
+res.users                       # Extended user capabilities
+```
+
+## 🏗️ Field Definitions
 
 ### Control Model (mgmtsystem.standard.control)
 
-#### Time Tracking Fields
+#### Core Control Fields
+| Field Name | Type | Required | Description |
+|------------|------|----------|-------------|
+| `name` | Char | No | Control display name |
+| `reference` | Char | No | Control reference identifier |
+| `code` | Char | No | Unique control code |
+| `title` | Char | No | Official control title |
+| `description` | Text | No | Detailed control description |
+| `active` | Boolean | No | Control active status (default: True) |
+| `implemented` | Boolean | Computed | Implementation status indicator |
+
+#### Time Tracking Fields (Minute Precision)
 | Field Name | Type | Unit | Description | Default |
 |------------|------|------|-------------|---------|
-| `manual_implementation_timing` | Float | Minutes | Time to manually implement control | 15.0 |
-| `manual_test_timing` | Float | Minutes | Time to manually test control | 7.5 |
-| `automated_implementation_timing` | Float | Seconds | Time for automated implementation | 0.0 |
-| `automated_test_timing` | Float | Seconds | Time for automated testing | 3.0 |
+| `implementation_time` | Float | Minutes | Time to implement control | 0.0 |
+| `maintenance_time` | Float | Minutes | Manual test/maintenance time | 7.5 |
+| `hourly_rate` | Float | Currency | Cost calculation rate | 100.0 |
 
 #### Computed Time Conversion Fields
 | Field Name | Type | Compute Method | Description |

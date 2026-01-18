@@ -37,6 +37,7 @@ class StandardControl(models.Model):
         'mgmtsystem.standard',
         string='Standard',
         required=False,
+        ondelete='cascade',
         help="The framework standard this control is associated with"
     )
 
@@ -112,15 +113,18 @@ class StandardControl(models.Model):
     company_id = fields.Many2one(
         'res.company',
         string="Company",
-        default=lambda self: self.env.company,
-        help="Company to which the control belongs."
+        related='standard_id.company_id',
+        store=True,
+        readonly=True,
+        help="Company to which the control belongs (inherited from parent standard)."
     )
 
     allowed_company_ids = fields.Many2many(
         'res.company',
         string='Allowed Companies',
-        default=lambda self: self.env.user.company_id,
-        help="List of allowed companies for this control"
+        related='standard_id.allowed_company_ids',
+        readonly=True,
+        help="Companies that can access this control (inherited from parent standard)"
     )
 
     additional_information = fields.Text(
@@ -609,8 +613,8 @@ class StandardControl(models.Model):
         user = self.env.user
         #FIXME RB5820: check standard groups
         return True
-        #is_manager = user.has_group('mgmtsystem_standard_event.group_standard_manager')
-        is_reviewer = user.has_group('mgmtsystem_standard_event.group_standard_reviewer')
+        #is_manager = user.has_group('mgmtsystem_standards.group_standard_multi_company_manager')
+        is_reviewer = user.has_group('mgmtsystem_standards.group_standard_reviewer')
         is_manager = True
         
         # Managers can perform any transition
@@ -634,6 +638,7 @@ class StandardControl(models.Model):
             for record in self:
                 if not self.is_allowed_state_transition(record.state, vals['state']):
                     raise AccessError(_('You are not allowed to change the state of this control.'))
+        
         return super().write(vals)
 
     def action_submit_review(self):
@@ -646,7 +651,7 @@ class StandardControl(models.Model):
     def action_approve(self):
         """Approve control for implementation"""
         self.ensure_one()
-        if not self.env.user.has_group('mgmtsystem_standard_event.group_standard_manager'):
+        if not self.env.user.has_group('mgmtsystem_standards.group_standard_multi_company_manager'):
             raise AccessError(_('Only managers can approve controls.'))
         self.write({
             'state': 'approved',
@@ -722,7 +727,7 @@ class StandardControl(models.Model):
     def action_retire(self):
         """Retire a control"""
         self.ensure_one()
-        if not self.env.user.has_group('mgmtsystem_standard_event.group_standard_manager'):
+        if not self.env.user.has_group('mgmtsystem_standards.group_standard_multi_company_manager'):
             raise AccessError(_('Only managers can retire controls.'))
         self.write({
             'state': 'retired',

@@ -1,9 +1,19 @@
-# Quick Start Guide - Management System Standards Module
+# ⚡ Quick Start Guide - Management System Standards Module
 
-## Installation
-1. Install the module through the Odoo Apps menu
-2. Ensure all dependencies are installed (mgmtsystem, document_page)
-3. Refresh your browser after installation
+**Version**: 18.0.1.0.5 | **Setup Time**: 15-30 minutes | **Target**: New Users, Administrators
+
+## 🚀 Installation & Prerequisites
+
+### System Requirements
+- Odoo 18.0 Enterprise
+- Required modules: `base`, `mail`, `mgmtsystem`, `document_page`, `product`
+- Optional (recommended): `mgmtsystem_audit_workflow` for enhanced tracking
+
+### Installation Steps
+1. **Install Module**: Apps → Search "Management System Standards" → Install
+2. **Verify Dependencies**: Ensure all required modules are active
+3. **Refresh Browser**: Clear cache and refresh for menu updates
+4. **Check Permissions**: Assign users to appropriate security groups
 
 ## Initial Setup
 
@@ -64,4 +74,4 @@ When a standard is updated to a new version:
 - Create custom dashboards to monitor compliance status
 
 ## Need Help?
-Contact your system administrator or the support team at support@equans.com
+Contact your system administrator or the support team at vorsselmansphilip@gmail.com

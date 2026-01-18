@@ -2,12 +2,12 @@
 
 {
     'name': 'Management System Standards',
-    'version': '18.0.1.0.1',
+    'version': '18.0.1.0.5',
     'license': 'AGPL-3',
     'category': 'RB5820',
     'summary': 'Standards Management for Management Systems',
-    'author': 'EQUANS',
-    'website': 'https://www.equans.com',
+    'author': 'Team Energy',
+    'website': 'https://www.example.com',
     'depends': [
         'base',
         'mail',
@@ -66,5 +66,9 @@ This module is particularly useful for organizations implementing or maintaining
 * Information Security Management Systems
 * Energy Management Systems
 * And other compliance requirements
-    """
+    """,
+    
+    'installable': True,
+    'auto_install': False,
+    'application': True,
 }

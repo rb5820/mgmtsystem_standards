@@ -60,6 +60,13 @@ class StandardZone(models.Model):
         readonly=True,
         help='Company related to this zone through its standard'
     )
+
+    # Remove complex many2many definition
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        help="Companies that can access this standard"
+    )
     
     # Related fields
     domain_ids = fields.One2many(

@@ -7,27 +7,11 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
+                    <group name="Standard Status">
                     <field name="state" widget="statusbar" 
                            statusbar_visible="draft,review,approved,implementing,implemented,verified"/>
-                    <!-- Buttons temporarily disabled to fix compatibility issues
-                    <button name="action_submit_review" type="object" string="Submit for Review" 
-                            invisible="state != 'draft'"/>
-                    <button name="action_approve" type="object" string="Approve" 
-                            invisible="state != 'review'"/>
-                    <button name="action_start_implementation" type="object" string="Start Implementation" 
-                            invisible="state != 'approved'"/>
-                    <button name="action_mark_implemented" type="object" string="Mark as Implemented" 
-                            invisible="state != 'implementing'"/>
-                    <button name="action_start_testing" type="object" string="Start Testing" 
-                            invisible="state not in ['implemented', 'ineffective']"/>
-                    <button name="action_mark_verified" type="object" string="Verify" 
-                            invisible="state != 'testing'"/>
-                    <button name="action_mark_ineffective" type="object" string="Mark as Ineffective" 
-                            invisible="state not in ['implemented', 'verified', 'testing']"/>
-                    <button name="action_retire" type="object" string="Retire Control" 
-                            invisible="state not in ['implemented', 'verified', 'ineffective']"/>
-                    -->
-
+                    </group>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -65,10 +49,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="📋 Description">
+                        <page string="📋 Description" name="description">
                             <field name="description" placeholder="Add detailed description here..."/>
                         </page>
-                        <page string="⚙️ Implementation">
+                        <page string="⚙️ Implementation" name="implementation">
                             <group>
                             <field name="rationale"/>
                             <field name="impact"/>
@@ -76,7 +60,7 @@
                             <field name="implementation_details" placeholder="Details on how the control is implemented..."/>
                             </group>
                         </page>
-                        <page string="🧪 Test Procedure">
+                        <page string="🧪 Test Procedure" name="test_procedure">
                             <group>
                                 <field name="audit"/>
                                 <field name="test_procedure" placeholder="Details on how the control is tested..."/>
@@ -84,10 +68,10 @@
                                 <field name="maintenance_time"/>
                             </group>
                         </page>
-                        <page string="ℹ️ Additional Information">
+                        <page string="ℹ️ Additional Information" name="additional_information">
                             <field name="additional_information" placeholder="Add any additional information..."/>
                         </page>
-                        <page string="📄 Documents">
+                        <page string="📄 Documents" name="documents">
                             <field name="document_ids">
                                 <list>
                                     <field name="name"/>
@@ -96,7 +80,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="💰 Cost Information">
+                        <page string="💰 Cost Information" name="cost_information">
                             <group>
                                 <group string="Implementation">
                                     <field name="implementation_time"/>
@@ -115,8 +99,8 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="🤖 Automated Assessment">
-                            <group>
+                        <page string="🤖 Automated Assessment" name="automated_assessment">
+                            <group> 
                                 <field name="automated_assessment"/>
 
                                 <field name="assessment_tools"/>
@@ -124,7 +108,7 @@
 
                             </group>
                         </page>
-                        <page string="📊 Tracking Information">
+                        <page string="📊 Tracking Information" name="tracking_information">
                             <group>
                                 <group string="Dates">
                                     <field name="approval_date"/>
@@ -158,10 +142,12 @@
         <field name="model">mgmtsystem.standard.control</field>
         <field name="arch" type="xml">
             <list 
-                decoration-muted="state == 'retired'" 
-                decoration-danger="state == 'review'" 
-                decoration-success="state == 'verified'" 
-                decoration-primary="state == 'implementing'">
+                decoration-warning="state == 'draft'"
+                decoration-info="state in ['review', 'implementing']"
+                decoration-success="state in ['approved','active']"
+                decoration-primary="state == 'implementing'"
+                decoration-muted="state in ['retired', 'ineffective','withdrawn']"
+                >
                 <!-- Visible fields -->
                 <field name="external_id" groups="base.group_system" optional="hide"/>
                 <field name="reference" optional="hide"/>
@@ -263,9 +249,11 @@
         <field name="arch" type="xml">
             <kanban default_group_by="state">
                 <field name="name"/>
+                <field name="reference"/>
                 <field name="standard_id"/>
                 <field name="domain_id"/>
                 <field name="state"/>
+                <field name="priority"/>
                 <templates>
                     <t t-name="card">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -289,12 +277,12 @@
                                     <span class="o_kanban_record_subtitle"><field name="standard_id"/></span>
                                 </div>
                                 <div>
-                                    <span t-if="record.priority.raw_value === 'high'" class="badge text-bg-danger float-end">High</span>
-                                    <span t-if="record.priority.raw_value === 'medium'" class="badge text-bg-warning float-end">Medium</span>
-                                    <span t-if="record.priority.raw_value === 'low'" class="badge text-bg-info float-end">Low</span>
+                                    <span t-if="record.priority and record.priority.value === 'high'" class="badge text-bg-danger float-end">High</span>
+                                    <span t-if="record.priority and record.priority.value === 'medium'" class="badge text-bg-warning float-end">Medium</span>
+                                    <span t-if="record.priority and record.priority.value === 'low'" class="badge text-bg-info float-end">Low</span>
                                 </div>
                                 <div>
-                                    <span class="badge float-end" t-attf-class="badge text-bg-#{record.state.raw_value == 'verified' ? 'success' : (record.state.raw_value == 'ineffective' ? 'danger' : (record.state.raw_value == 'implemented' ? 'info' : 'secondary'))}">
+                                    <span t-if="record.state and record.state.value" class="badge float-end" t-attf-class="badge text-bg-#{record.state.value == 'verified' ? 'success' : (record.state.value == 'ineffective' ? 'danger' : (record.state.value == 'implemented' ? 'info' : 'secondary'))}">
                                         <field name="state"/>
                                     </span>
                                 </div>
@@ -328,7 +316,8 @@
     <menuitem id="menu_mgmtsystem_standard_controls"
               name="🔧 Controls"
               parent="menu_mgmtsystem_standards_root"
-              action="action_mgmtsystem_standard_control"
+              action="action_mgmtsystem_standard_control"              
+              groups="base.group_system,mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"              
               sequence="40"/>
     
 
@@ -338,6 +327,7 @@
         name="📊 Standard Control Report"
         parent="menu_mgmtsystem_standards_root"
         action="action_report_standard_control"
+        groups="base.group_system,mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"
         sequence="50"/>
 
 

@@ -27,24 +27,50 @@
         <field name="model">mgmtsystem.standard.control.assessment.tool</field>
         <field name="arch" type="xml">
             <form string="Assessment Tool">
+                <header>
+                    <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="title"/>
                             <field name="tool_type"/>
                             <field name="control_id"/>
                         </group>
                         <group>
                             <field name="active"/>
                             <field name="company_id"/>
+                            <field name="vendor"/>
+                            <field name="version"/>
                         </group>
                     </group>
                     <group>
                         <field name="description"/>
                     </group>
                     <group>
-                        <field name="linked_control_ids" group_by_standard="True"/>
+                        <group>
+                            <field name="tool_url" widget="url"/>
+                            <field name="documentation_url" widget="url"/>
+                        </group>
+                        <group>
+                            <field name="tool_instructions"/>
+                        </group>
                     </group>
+                    <notebook>
+                        <page string=" 🔗 Linked Controls">
+                            <group>
+                                <field name="linked_control_ids" group_by_standard="True"/>
+                            </group>
+
+                        </page>
+                        <page string="🛡️ Allowed Companies" name="allowed_companies">
+                            <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Default Login Notification Configuration -->
+        <record id="login_notification_config_default" model="mgmtsystem.notification.config">
+            <field name="name">🔑 Default Login Notifications</field>
+            <field name="description">Shows overdue and due today items when users log in</field>
+            <field name="sequence">5</field>
+            <field name="active" eval="True"/>
+            <field name="trigger_type">login</field>
+            <field name="model_name">mgmtsystem.standard</field>
+            <field name="notification_type">popup</field>
+            <field name="popup_title">📋 Login Notifications</field>
+            <field name="popup_message">You have important items that need attention.</field>
+            <field name="popup_type">info</field>
+            <field name="popup_sticky" eval="True"/>
+            <field name="notification_frequency">daily</field>
+            <field name="enable_spam_prevention" eval="True"/>
+            <field name="notification_priority">high</field>
+        </record>
+        
+    </data>
+</odoo>

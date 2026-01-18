@@ -69,7 +69,9 @@ class StandardDomain(models.Model):
         string="Standard",
         required=True,
         ondelete='cascade',
-        tracking=True
+        readonly=True,
+        tracking=True,
+        help="Standard this domain belongs to (cannot be changed after creation)"
     )
     
     zone_id = fields.Many2one(
@@ -93,10 +95,8 @@ class StandardDomain(models.Model):
 
     parent_path = fields.Char(
         string="Parent Path", 
-        compute='_compute_parent_path', 
-        store=True, 
         index=True,
-        help="Full path from root to current record based on letter codes"
+        help="Full path from root to current record (automatically maintained by parent store)"
     )
 
     parent_left = fields.Integer(
@@ -126,10 +126,12 @@ class StandardDomain(models.Model):
 
     #  allow reuse of existing controls
     control_ids = fields.Many2many(
-         'mgmtsystem.standard.control',
-         'domain_id',
-         string="Controls",
-         help="Standard controls within this domain"
+        'mgmtsystem.standard.control',
+        'mgmtsystem_standard_domain_control_rel',
+        'domain_id',
+        'control_id',
+        string="Controls",
+        help="Standard controls within this domain"
     )
 
     product_ids = fields.Many2many(
@@ -236,16 +238,19 @@ class StandardDomain(models.Model):
     company_id = fields.Many2one(
         'res.company',
         string='Company',
-        default=lambda self: self.env.company,
-        help='Company this domain belongs to'
+        related='standard_id.company_id',
+        store=True,
+        readonly=True,
+        help='Company this domain belongs to (inherited from parent standard)'
     )
 
     # Remove complex many2many definition
     allowed_company_ids = fields.Many2many(
         'res.company',
         string='Allowed Companies',
-        default=lambda self: self.env.user.company_id,
-        help="Companies that can access this domain"
+        related='standard_id.allowed_company_ids',
+        readonly=True,
+        help="Companies that can access this domain (inherited from parent standard)"
     )
 
     owner_id = fields.Many2one(
@@ -399,13 +404,21 @@ class StandardDomain(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to handle domain creation"""
-        result = super().create(vals_list)
-        return result
+        """Ensure company_id is always included in allowed_company_ids"""
+        records = super().create(vals_list)
+        for record in records:
+            if record.company_id and record.company_id not in record.allowed_company_ids:
+                record.allowed_company_ids = [(4, record.company_id.id)]
+        return records
     
     def write(self, vals):
-        """Override write to handle domain updates"""
+        """Ensure company_id is always included in allowed_company_ids when updated"""
         result = super().write(vals)
+        # Check if either company_id or allowed_company_ids was modified
+        if 'company_id' in vals or 'allowed_company_ids' in vals:
+            for record in self:
+                if record.company_id and record.company_id not in record.allowed_company_ids:
+                    record.allowed_company_ids = [(4, record.company_id.id)]
         return result
     
     def action_rebuild_parent_store(self):

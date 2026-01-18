@@ -6,6 +6,9 @@
         <field name="model">mgmtsystem.standard.category</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
@@ -28,10 +31,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description">
+                        <page string="📝 Description">
                             <field name="description" placeholder="Add detailed description here..."/>
                         </page>
-                        <page string="Standards">
+                        <page string="📋 Standards" invisible="not standard_ids">
                             <field name="standard_ids">
                                 <list>
                                     <field name="code"/>
@@ -41,7 +44,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Child Categories" invisible="child_ids == []">
+                        <page string="📂 Child Categories" invisible="not child_ids">
                             <field name="child_ids">
                                 <list>
                                     <field name="name"/>
@@ -49,6 +52,12 @@
                                     <field name="description"/>
                                 </list>
                             </field>
+                        </page>
+                        <page string="🛡️ Allowed Companies" name="allowed_companies">
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -117,5 +126,6 @@
               name="📂 Standard Categories"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_category"
+              groups="mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"
               sequence="70"/>
 </odoo>

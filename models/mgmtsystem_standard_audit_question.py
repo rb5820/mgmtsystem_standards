@@ -78,3 +78,11 @@ class MgmtSystemStandardAuditQuestion(models.Model):
         store=True,
         readonly=True
     )
+
+        # Remove complex many2many definition
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        store=True,
+        help="Companies that can access this standard"
+    )

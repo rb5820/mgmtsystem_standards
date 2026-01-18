@@ -6,6 +6,9 @@
         <field name="model">mgmtsystem.standard.requirement</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
@@ -163,6 +166,5 @@
     <menuitem id="menu_mgmtsystem_standard_requirements"
               name="📝 Requirements"
               parent="menu_mgmtsystem_standards_root"
-              action="action_mgmtsystem_standard_requirement"
-              sequence="30"/>
+              action="action_mgmtsystem_standard_requirement"              groups="base.group_system,mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"              sequence="30"/>
 </odoo>

@@ -64,4 +64,17 @@ class StandardAssessmentTool(models.Model):
         help='The control this assessment tool is linked to.'
     )
     active = fields.Boolean(string='Active', default=True, help='Set to True to keep the tool active, False to archive it.')
-    company_id = fields.Many2one('res.company', string='Company')
+    
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        default=lambda self: self.env.company,
+        help='Company this standard belongs to'
+    )
+
+    # Remove complex many2many definition
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        help="Companies that can access this standard"
+    )

@@ -50,6 +50,7 @@
         <field name="arch" type="xml">
             <form string="Standard Certification">
                 <header>
+                    <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,active,review,compliant"/>
                 </header>
                 <sheet>
@@ -236,6 +237,7 @@
               name="🏆 Certifications"
               parent="mgmtsystem_standards.menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_certification"
+              groups="base.group_system,mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"
               sequence="60"/>
 
 </odoo>

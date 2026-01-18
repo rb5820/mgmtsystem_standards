@@ -68,6 +68,13 @@ class MgmtSystemStandardCategory(models.Model):
         default=lambda self: self.env.company,
     )
 
+        # Remove complex many2many definition
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        help="Companies that can access this standard"
+    )
+
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):
         for category in self:

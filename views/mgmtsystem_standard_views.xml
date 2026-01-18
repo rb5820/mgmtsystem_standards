@@ -7,18 +7,18 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
+                    <group name="Standard Status">
                     <field name="state" widget="statusbar" options="{'clickable': true}" 
                            statusbar_visible="draft,active,superseded,withdrawn"/>
+                    </group>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
                             <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
                         </button>
-                        <button name="action_rebuild_parent_store" type="object" class="oe_stat_button" icon="fa-refresh" 
-                                string="Rebuild Hierarchy" help="Rebuild parent/child hierarchy structure"/>
-                    </div>
-                    <field name="color" invisible="1"/>
+                   </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -43,7 +43,7 @@
                             <field name="publication_date"/>
                             <field name="effective_date"/>
                             <field name="expiry_date"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="company_id"/>
                             <field name="code" string="Standard Code" placeholder="e.g. ISO 9001:2015" readonly="1"/>
                             <field name="last_assessment_date"/>
                             <field name="next_assessment_date"/>
@@ -53,17 +53,12 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="📋 Description">
+                        <page string="📋 Description" name="description">
                             <field name="description" placeholder="Add detailed description here..."/>
                         </page>
-                        <page string="🏗️ Standard domains">
+                        <page string="🏗️ Standard domains" invisible="not domain_ids">
                             <field name="domain_ids" domain="[('parent_id', '=', 0)]" >
-                                <list                              
-                                decoration-warning="state == 'draft'"
-                                decoration-info="state in ['review', 'implementing']"
-                                decoration-success="state in ['approved','active']"
-                                decoration-primary="state == 'implementing'"
-                                decoration-muted="state in ['retired', 'ineffective']">
+                                <list>
                                     <!-- <field name="sequence" widget="handle"/> -->
                                     <field name="path_level" readonly="1"/>
                                     <field name="reference"/>
@@ -82,10 +77,10 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="🎯 Scope">
+                        <page string="🎯 Scope" name="scope">
                             <field name="scope" placeholder="Specify the scope of application..."/>
                         </page>
-                        <page string="✅ Requirements" invisible="not requirement_ids">
+                        <page string="✅ Requirements" name="requirements" invisible="not requirement_ids">
                             <field name="requirement_ids">
                                 <list>
                                     <field name="name"/>
@@ -95,7 +90,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="📄 Documents" invisible="not document_ids">
+                        <page string="📄 Documents" name="documents" invisible="not document_ids">
                             <field name="document_ids">
                                 <list>
                                     <field name="name"/>
@@ -104,14 +99,14 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="📦 Products" invisible="not all_product_ids">
+                        <page string="📦 Products" name="products" invisible="not all_product_ids">
                             <field name="all_product_ids">
                                 <list>
                                     <field name="name"/>
                                 </list>
                             </field>
                         </page>
-                        <page string="💰 Cost Information">
+                        <page string="💰 Cost Information" name="cost_information">
                             <group>
                                 <group string="Control Statistics">
                                     <field name="standard_control_count"/>
@@ -133,7 +128,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="⚠️ Superseded Information" invisible="state != 'superseded'">
+                        <page string="⚠️ Superseded Information" name="superseded_information" invisible="state != 'superseded'">
                             <group>
                                 <field name="superseded_by_id" required="state == 'superseded'"/>
                             </group>
@@ -150,8 +145,8 @@
                         
                         <page string="🛡️ Allowed Companies" name="allowed_companies">
                             <group>
-                                <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company"/>
+                                <field name="company_id"/>
+                                <field name="allowed_company_ids" widget="many2many_tags"/>
                             </group>
                         </page>
                     </notebook>
@@ -166,7 +161,7 @@
         <field name="name">mgmtsystem.standard.list</field>
         <field name="model">mgmtsystem.standard</field>
         <field name="arch" type="xml">
-            <list decoration-muted="state == 'withdrawn'" decoration-bf="state == 'active'">
+            <list>
                 <field name="external_id" groups="base.group_system" optional="hide"/>
                 <field name="code" optional="hide"/>
                 <field name="name"/>
@@ -197,7 +192,6 @@
                 <field name="next_assessment_date" optional="hide"/>
                 <field name="compliance_score" optional="hide"/>
                 <field name="active" optional="hide"/>
-                <field name="color" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company" optional="hide"/>
             </list>
@@ -205,17 +199,11 @@
     </record>
 
     <!-- Standard list View (Hierarchical) -->
-    <record id="view_mgmtsystem_standard_list" model="ir.ui.view">
-        <field name="name">mgmtsystem.standard.list</field>
+    <record id="view_mgmtsystem_standard_list_hierarchical" model="ir.ui.view">
+        <field name="name">mgmtsystem.standard.list.hierarchical</field>
         <field name="model">mgmtsystem.standard</field>
         <field name="arch" type="xml">
-            <list string="Standards Hierarchy" 
-                decoration-warning="state == 'draft'"
-                decoration-info="state in ['review', 'implementing']"
-                decoration-success="state in ['approved','active']"
-                decoration-primary="state == 'implementing'"
-                decoration-muted="state in ['retired', 'ineffective','withdrawn']"
-                >
+            <list string="Standards Hierarchy">
                 <field name="external_id" groups="base.group_system" optional="hide"/>
                 <field name="code" optional="hide"/>
                 <field name="name"/>
@@ -245,7 +233,6 @@
                 <field name="next_assessment_date" optional="hide"/>
                 <field name="compliance_score" optional="hide"/>
                 <field name="active" optional="hide"/>
-                <field name="color" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="allowed_company_ids" widget="many2many_tags" groups="base.group_multi_company" optional="hide"/>
             </list>
@@ -295,10 +282,9 @@
                 <field name="category_id"/>
                 <field name="standard_type"/>
                 <field name="state"/>
-                <field name="color"/>
                 <templates>
                     <t t-name="card">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.state.raw_value == 'withdrawn' ? 'oe_kanban_color_3' : ''} oe_kanban_color_#{kanban_color(record.color.raw_value)}">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.state.raw_value == 'withdrawn' ? 'oe_kanban_color_3' : ''}">
                             <div class="o_dropdown_kanban dropdown">
                                 <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <i class="fa fa-ellipsis-v"/>
@@ -306,8 +292,6 @@
                                 <div class="dropdown-menu" role="menu">
                                     <a t-if="widget.editable" role="button" type="edit" class="dropdown-item">Edit</a>
                                     <a t-if="widget.deletable" role="button" type="delete" class="dropdown-item">Delete</a>
-                                    <div role="separator" class="dropdown-divider"/>
-                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
                             <div class="oe_kanban_content">
@@ -350,7 +334,7 @@
         <field name="res_model">mgmtsystem.standard</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="search_view_id" ref="view_mgmtsystem_standard_search"/>
-        <field name="context">{"search_default_active_state": 1, "search_default_top_level_only": 1}</field>
+        <field name="context">{}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first Management System Standard
@@ -365,13 +349,15 @@
 
     <!-- Menu Items -->
     <menuitem id="menu_mgmtsystem_standards_root"
-              name="📋 Standards"
+              name="📋 Management System Standards"
               parent="mgmtsystem.menu_mgmtsystem_root"
+              groups="mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"
               sequence="30"/>
 
     <menuitem id="menu_mgmtsystem_standards"
               name="📋 Standards"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard"
+              groups="mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"
               sequence="10"/>
 </odoo>

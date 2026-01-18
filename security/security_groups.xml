@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
+    <data>
 
         <!-- Category for Management System - Standards -->
         <record id="category_mgmtsystem_standard" model="ir.module.category">
@@ -46,64 +46,4 @@
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         </record>
     </data>
-
-    <!-- Commented out record rules - uncomment when needed -->
-    <!--
-    <data noupdate="1">
-        <record id="rule_control_test_tester" model="ir.rule">
-            <field name="name">Standard Control Test: Testers see own tests</field>
-            <field name="model_id" ref="model_mgmtsystem_standard_control_test"/>
-            <field name="domain_force">[('tester_id', '=', user.id)]</field>
-            <field name="groups" eval="[(4, ref('group_standard_tester'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="False"/>
-        </record>
-
-        <record id="rule_control_test_reviewer" model="ir.rule">
-            <field name="name">Standard Control Test: Reviewers see all tests</field>
-            <field name="model_id" ref="model_mgmtsystem_standard_control_test"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_standard_reviewer'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="False"/>
-        </record>
-
-        <record id="rule_control_test_manager" model="ir.rule">
-            <field name="name">Standard Control Test: Managers full access</field>
-            <field name="model_id" ref="model_mgmtsystem_standard_control_test"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_standard_manager'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
-        </record>
-
-        <record id="rule_standard_kpi_reviewer" model="ir.rule">
-            <field name="name">Standard KPI: Reviewers read-only access</field>
-            <field name="model_id" ref="model_mgmtsystem_standard_kpi"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_standard_reviewer'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
-            <field name="perm_create" eval="False"/>
-            <field name="perm_unlink" eval="False"/>
-        </record>
-
-        <record id="rule_standard_kpi_manager" model="ir.rule">
-            <field name="name">Standard KPI: Managers full access</field>
-            <field name="model_id" ref="model_mgmtsystem_standard_kpi"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_standard_manager'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
-        </record>
-    </data>
-    -->
 </odoo>

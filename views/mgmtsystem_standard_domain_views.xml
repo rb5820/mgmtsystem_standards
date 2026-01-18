@@ -7,10 +7,16 @@
         <field name="arch" type="xml">
             <form string="Standard Domain">
                 <header>
+                    <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
                     <field name="state" widget="statusbar" options="{'clickable': true}" 
                            statusbar_visible="draft,review,approved,implementing,implemented,verified"/>
                 </header>
                 <sheet>
+                    <!-- Hidden button box for workflow view inheritance -->
+                    <div class="oe_button_box" name="button_box" invisible="1">
+                        <!-- Placeholder for workflow buttons -->
+                    </div>
+                    
                     <div class="oe_title">
                         <h2>
                             <field name="name"/>
@@ -48,7 +54,7 @@
                         <page string="📝 Additional Information">
                             <field name="additional_information" placeholder="Add any additional information..."/>
                         </page>
-                        <page string="� Cost Information">
+                        <page string="💰 Cost Information">
                             <group>
                                 <group string="Control Statistics">
                                     <field name="domain_control_count"/>
@@ -70,7 +76,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="�📦 Related Products" invisible="not product_ids">
+                        <page string="📦 Related Products" invisible="not product_ids">
                             <field name="product_ids">
                                 <list>
                                     <field name="default_code"/>
@@ -279,5 +285,6 @@
               name="🏗️ Domains"
               parent="menu_mgmtsystem_standards_root"
               action="action_mgmtsystem_standard_domain"
+              groups="base.group_system,mgmtsystem_standards.group_standard_viewer,mgmtsystem_standards.group_standard_user,mgmtsystem_standards.group_standard_tester,mgmtsystem_standards.group_standard_reviewer,mgmtsystem_standards.group_standard_manager"
               sequence="25"/>
 </odoo>

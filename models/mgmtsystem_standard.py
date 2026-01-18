@@ -235,10 +235,32 @@ class MgmtSystemStandard(models.Model):
     # Remove complex many2many definition
     allowed_company_ids = fields.Many2many(
         'res.company',
+        relation='mgmtsystem_standard_company_rel',
+        column1='standard_id',
+        column2='company_id',
         string='Allowed Companies',
-        default=lambda self: self.env.user.company_id,
+        default=lambda self: self.env.company,
         help="Companies that can access this standard"
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Ensure company_id is always included in allowed_company_ids"""
+        records = super().create(vals_list)
+        for record in records:
+            if record.company_id and record.company_id not in record.allowed_company_ids:
+                record.allowed_company_ids = [(4, record.company_id.id)]
+        return records
+
+    def write(self, vals):
+        """Ensure company_id is always included in allowed_company_ids when updated"""
+        result = super().write(vals)
+        # Check if either company_id or allowed_company_ids was modified
+        if 'company_id' in vals or 'allowed_company_ids' in vals:
+            for record in self:
+                if record.company_id and record.company_id not in record.allowed_company_ids:
+                    record.allowed_company_ids = [(4, record.company_id.id)]
+        return result
 
     # Standard Cost Information
     standard_total_maintenance_cost_manual = fields.Float(
@@ -334,8 +356,6 @@ class MgmtSystemStandard(models.Model):
         default=True, 
         help="If unchecked, it will allow you to hide this standard without removing it."
     )
-    
-    color = fields.Integer(string='Color Index')
     
     external_id = fields.Char(
         string="External ID",

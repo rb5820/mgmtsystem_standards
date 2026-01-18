@@ -183,6 +183,13 @@ class StandardCertification(models.Model):
         default=lambda self: self.env.company
     )
 
+    # Remove complex many2many definition
+    allowed_company_ids = fields.Many2many(
+        'res.company',
+        string='Allowed Companies',
+        help="Companies that can access this standard"
+    )
+
     active = fields.Boolean(
         string="Active",
         default=True,

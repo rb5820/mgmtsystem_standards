@@ -2,28 +2,41 @@
 
 ## 🎯 **Executive Summary**
 
-The Management System Standards module is a **enterprise-grade compliance management platform** for Odoo 18 that transforms compliance from a cost center into a strategic asset. With advanced cost tracking, hierarchical organization, and multi-framework support, it provides quantifiable ROI analysis and data-driven compliance decisions.
+**Version**: 18.0.1.0.5 | **License**: AGPL-3 | **Category**: Management Systems
+
+The Management System Standards module is an **enterprise-grade compliance management platform** for Odoo 18 Enterprise that transforms compliance from a cost center into a strategic asset. With advanced minute-level cost tracking, hierarchical organization, and multi-framework support, it provides quantifiable ROI analysis and data-driven compliance decisions.
 
 ### **Business Value Proposition**
-- **Cost Quantification**: Precise tracking of compliance costs with 99%+ automation savings
-- **Multi-Framework Support**: Single platform for ISO, CIS, IEC 62443, and custom standards  
-- **Enterprise Scalability**: Multi-company architecture with role-based security
-- **Strategic Intelligence**: Executive dashboards and ROI analytics for informed decision-making
+- **📊 Precision Cost Tracking**: Minute-level time tracking with automatic cost calculations
+- **⚡ Multi-Framework Support**: Single platform for ISO 9001/14001/27001, CIS Controls, IEC 62443, and custom standards  
+- **🏢 Enterprise Scalability**: Multi-company architecture with role-based security and company isolation
+- **📈 Strategic Intelligence**: Executive dashboards and ROI analytics for informed decision-making
+- **🔄 Workflow Integration**: Full audit trail with mgmtsystem_audit_workflow integration
+- **💰 Cost Optimization**: Up to 99% cost reduction through automation vs manual processes
 
 ## 🏗️ **Architecture Overview**
 
-### **Core Data Models (11 Models)**
+### **Core Data Models (11 Models + Extensions)**
 ```
 📋 mgmtsystem.standard (Core Framework)
-├── 🏗️ mgmtsystem.standard.domain (Security Domains)  
-│   └── 📝 mgmtsystem.standard.control (Individual Controls)
-├── 📋 mgmtsystem.standard.requirement (Detailed Requirements)
+├── 🏗️ mgmtsystem.standard.domain (Security Domains with Path Filtering)  
+│   └── 📝 mgmtsystem.standard.control (Controls with Cost Tracking)
+├── 📋 mgmtsystem.standard.requirement (Hierarchical Requirements)
 ├── 🏆 mgmtsystem.standard.certification (Assessment Procedures)
 ├── 📂 mgmtsystem.standard.category (Framework Categories)
 ├── 🔧 mgmtsystem.standard.zone (Logical Groupings)
 ├── 📊 mgmtsystem.standard.assessment.tool (External Integrations)
-└── ❓ mgmtsystem.standard.audit.question (Audit Support)
+├── ❓ mgmtsystem.standard.audit.question (Audit Support)
+├── 🔔 mgmtsystem.notification.config (Notification Management)
+└── 👤 res.users (Extended User Capabilities)
 ```
+
+### **Key Dependencies**
+- **base**: Odoo core framework
+- **mail**: Activity tracking and notifications
+- **mgmtsystem**: Base management system module
+- **document_page**: Documentation integration
+- **product**: Product lifecycle integration
 
 ### **Hierarchical Cost Aggregation**
 ```
@@ -43,11 +56,46 @@ Control Level
 └── Automated Testing: $X/year (X seconds × frequency)
 ```
 
-## 💰 **Cost Tracking System Deep Dive**
+## 💰 **Advanced Cost Tracking System**
 
-### **Time Precision Architecture**
-- **Implementation Time**: Minutes-based tracking for accurate resource planning
-- **Testing Time**: Separate manual vs. automated timing with frequency multipliers
+### **Minute-Level Time Precision**
+- **Implementation Time**: Precise minute-based tracking for resource planning
+- **Maintenance Time**: Separate manual (default 7.5 min) vs automated timing
+- **Hourly Rate**: Configurable rate (default $100/hour) for cost calculations
+- **Frequency Multipliers**: Annual cost calculations based on testing frequency
+
+### **Dual Cost Models**
+```python
+# Manual-Only Model
+manual_annual_cost = (maintenance_time_minutes / 60) * hourly_rate * test_frequency_per_year
+
+# Combined (Manual + Automated) Model  
+combined_annual_cost = manual_cost * automation_efficiency_factor
+```
+
+### **Hierarchical Cost Aggregation**
+```
+Standard Level (∑ All Domains)
+├── Total Implementation Cost: $XXX,XXX
+├── Manual Annual Cost: $XX,XXX/year (XXXX hours)
+└── Automated Annual Cost: $X,XXX/year (XX hours) → 99%+ savings
+
+Domain Level (∑ All Controls in Domain)
+├── Domain Implementation: $XX,XXX
+├── Manual Maintenance: $X,XXX/year (XXX hours)
+└── Automated Maintenance: $XXX/year (X hours)
+
+Control Level (Individual Control)
+├── Setup Cost: $XXX (X minutes × rate)
+├── Manual Testing: $XXX/year (X minutes × frequency)
+└── Automated Testing: $X/year (X seconds × frequency)
+```
+
+### **ROI Analysis Features**
+- **Cost Reduction Calculations**: Quantifies savings from manual to automated
+- **Budget Planning**: Complete first-year projections including setup + maintenance
+- **Time-to-Value**: Tracks implementation time vs ongoing operational costs
+- **Automation Benefits**: Clear ROI demonstration for automation investments
 - **Automatic Conversions**: Minutes ↔ Hours for user convenience
 - **Annual Projections**: Frequency-based annual cost calculations
 

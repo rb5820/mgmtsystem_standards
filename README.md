@@ -124,53 +124,129 @@ Business Result:
 └── Customer confidence maintained throughout acquisition
 ```
 
-### Dependencies
+## 📦 Installation & Setup
+
+### **Prerequisites**
+- **Odoo 18.0 Enterprise**: Full enterprise features required
+- **Python 3.10+**: Modern Python environment
+- **PostgreSQL 12+**: Database with proper indexing support
+
+### **Dependencies**
 ```python
-'base', 'mail', 'mgmtsystem', 'document_page', 'product'
+Required Modules:
+├── 'base'           # Odoo core framework  
+├── 'mail'           # Activity tracking & notifications
+├── 'mgmtsystem'     # Base management system (external)
+├── 'document_page'  # Documentation integration
+└── 'product'        # Product lifecycle integration
+
+Recommended:
+└── 'mgmtsystem_audit_workflow'  # Enhanced audit trails
 ```
 
-### Installation Steps
-1. Copy `mgmtsystem_standards` to your Odoo addons directory
-2. Restart Odoo server
-3. Update Apps List
-4. Install "Management System Standards"
+### **Installation Steps**
+1. **Download Module**: Clone or extract to Odoo addons directory
+2. **Install Dependencies**: Ensure all required modules are available
+3. **Restart Server**: `sudo systemctl restart odoo` or equivalent
+4. **Update Apps List**: Apps → Update Apps List (Developer Mode required)
+5. **Install Module**: Search "Management System Standards" → Install
+6. **Configure Security**: Assign users to appropriate security groups
 
-## 🚀 Quick Start
+### **Post-Installation Verification**
+```bash
+# Check module installation
+curl -X GET "http://your-odoo-server/web/dataset/call_kw/ir.module.module/search_read" \
+  --data '{"params":{"domain":[["name","=","mgmtsystem_standards"]],"fields":["state"]}}'
 
-### 1. **Navigate to Management System**
-Access via: **Apps > Management System > Standards**
+# Verify security groups
+# Login → Settings → Users & Companies → Groups
+# Confirm all 5 mgmtsystem_standards security groups are present
+```
 
-### 2. **Create Your First Standard**
-```
-Management System > 📋 Standards > Create
-```
-- Fill in standard details (name, code, version)
-- Set category and publication dates
-- Define scope and description
+## 🚀 Quick Start Guide
 
-### 3. **Add Security Domains**
+### **Step 1: Configure Security Groups** 👥
 ```
-Management System > 🏗️ Domains > Create
-```
-- Create domains like "Access Control", "Network Security"
-- Set path levels for hierarchical organization
-- Link to parent standard
+Settings → Users & Companies → Groups
 
-### 4. **Define Requirements**
+Assign users to appropriate levels:
+├── 👁️ Standards Viewer (Read-only access)
+├── 👤 Standards User (Basic editing)  
+├── 🧪 Standards Tester (Assessment tools)
+├── 👀 Standards Reviewer (Approval workflows)
+└── 👑 Standards Manager (Full administration)
 ```
-Management System > 📝 Requirements > Create
-```
-- Add clause numbers and requirement text
-- Set compliance status and priority
-- Assign responsible persons
 
-### 5. **Implement Controls**
+### **Step 2: Create Your First Standard** 📋
 ```
-Management System > 🔧 Controls > Create
+Navigation: Apps → Management System → 📋 Standards → Create
+
+Essential Configuration:
+├── Standard Name: "ISO 27001:2022"
+├── Title: "Information Security Management System"
+├── Category: Create/select appropriate category
+├── Publication Date: Official standard release date
+├── Status: Active (for current use)
+├── Version: "2022" or appropriate version identifier
+└── Description: Comprehensive scope and applicability
 ```
-- Define control objectives and procedures
-- Add rationale and impact statements
-- Link assessment tools and audit procedures
+
+### **Step 3: Build Domain Structure** 🏗️
+```
+Navigation: Management System → 🏗️ Domains → Create
+
+Example ISO 27001 Structure:
+├── A.5 - Information Security Policies (path_level=1)
+├── A.6 - Organization of Information Security (path_level=1)  
+├── A.6.1 - Internal Organization (path_level=2, parent=A.6)
+├── A.6.2 - Mobile Devices & Teleworking (path_level=2, parent=A.6)
+└── [...continue for all Annex A controls]
+
+Configuration Tips:
+├── Use Path for filtering (A.5, A.6.1, A.8.2.3)
+├── Set Path Level for hierarchy (1=main, 2=sub, 3=detail)
+├── Link Parent Domain for proper tree structure
+└── Assign to Zones for logical groupings
+```
+
+### **Step 4: Define Controls with Cost Tracking** 📝💰
+```
+Navigation: Management System → 📝 Controls → Create
+
+Example Control Configuration:
+├── Control Code: "A.5.1.1"
+├── Title: "Information security policy"
+├── Domain: Link to A.5 domain from Step 3
+├── Implementation Time: 120 minutes (2 hours setup)
+├── Maintenance Time: 30 minutes (quarterly review)
+├── Hourly Rate: $100/hour (adjust for your organization)
+├── Status: Active
+└── Description: Detailed control implementation guidance
+
+Cost Preview:
+├── Implementation Cost: $200 (120 min × $100/hr)
+├── Annual Maintenance (Manual): $200/year (4 reviews × 30 min)
+├── Annual Maintenance (Automated): $20/year (90% savings)
+└── 3-Year Total Savings: $540 with automation
+```
+
+### **Step 5: Create Requirements & Link Evidence** 📋
+```
+Navigation: Management System → 📋 Requirements → Create
+
+Structure Requirements:
+├── Requirement Code: "5.1.1"
+├── Title: Match control title for consistency
+├── Parent: Link to higher-level requirement if applicable
+├── Compliance Status: Not Compliant/Partially/Compliant
+├── Evidence: Attach supporting documentation
+└── Audit Questions: Define verification criteria
+
+Link to Controls:
+├── Many-to-many relationship with controls
+├── Allows multiple controls to address one requirement
+└── Enables comprehensive compliance tracking
+```
 
 ## 🎛️ Advanced Usage
 
@@ -277,7 +353,7 @@ Management System > 🔧 Controls > Create
 ## 🆘 Support & Contact
 
 ### **Technical Support**
-- **Email**: support@equans.com
+- **Email**: support@teamenergy.com
 - **Documentation**: Internal wiki and knowledge base
 - **Issue Tracking**: Internal project management system
 
@@ -294,6 +370,6 @@ Management System > 🔧 Controls > Create
 **Developed by Team Energy Team**  
 *Version 18.0.1.0.0 - December 2025*
 
-This module is part of the EQUANS  Team Energy  Ecosystem for comprehensive management system automation and compliance tracking.
+This module is part of the Team Energy Ecosystem for comprehensive management system automation and compliance tracking.
 
 **© 2025 - All Rights Reserved**
