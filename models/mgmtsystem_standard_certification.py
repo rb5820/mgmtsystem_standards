@@ -215,12 +215,10 @@ class StandardCertification(models.Model):
                 vals['sequence'] = self.env['ir.sequence'].next_by_code('mgmtsystem.standard.certification') or 10
         return super().create(vals_list)
 
-    def name_get(self):
+    def _compute_display_name(self):
         """Custom name display"""
-        result = []
         for record in self:
             name = record.name
             if record.recommendation_number:
                 name = f"{record.recommendation_number} - {name}"
-            result.append((record.id, name))
-        return result
+            record.display_name = name

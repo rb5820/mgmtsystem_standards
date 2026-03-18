@@ -377,15 +377,13 @@ class StandardDomain(models.Model):
                 record.external_id = f"{data.module}.{data.name}"
             else:
                 record.external_id = False    
-    def name_get(self):
+    def _compute_display_name(self):
         """Custom name display to include the reference code"""
-        result = []
         for record in self:
             name = record.name
             if record.reference:
                 name = f"[{record.reference}] {name}"
-            result.append((record.id, name))
-        return result
+            record.display_name = name
     
     def action_view_controls(self):
         """View controls for this domain"""

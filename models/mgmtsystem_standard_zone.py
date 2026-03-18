@@ -110,16 +110,13 @@ class StandardZone(models.Model):
                 if existing:
                     raise ValidationError(_("Zone code must be unique within a standard."))
     
-    def name_get(self):
+    def _compute_display_name(self):
         """Custom display name showing code and name."""
-        result = []
         for zone in self:
             if zone.code:
-                name = f"[{zone.code}] {zone.name}"
+                zone.display_name = f"[{zone.code}] {zone.name}"
             else:
-                name = zone.name
-            result.append((zone.id, name))
-        return result
+                zone.display_name = zone.name
     
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
