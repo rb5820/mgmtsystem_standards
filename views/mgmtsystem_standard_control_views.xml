@@ -8,9 +8,37 @@
             <form>
                 <header>
                 <div name="audit_workflow_helper" style="display: none;" invisible="1"/>
+                    <button name="action_submit_review" string="Submit for Review" type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-primary"
+                            groups="mgmtsystem_standards.group_standard_manager"
+                            invisible="state != 'review'"/>
+                    <button name="action_start_implementation" string="Start Implementation" type="object"
+                            class="btn-primary"
+                            invisible="state != 'approved'"/>
+                    <button name="action_mark_implemented" string="Mark Implemented" type="object"
+                            class="btn-primary"
+                            invisible="state != 'implementing'"/>
+                    <button name="action_start_testing" string="Start Testing" type="object"
+                            class="btn-secondary"
+                            invisible="state not in ['implemented', 'ineffective']"/>
+                    <button name="action_mark_verified" string="Verify" type="object"
+                            class="btn-success"
+                            groups="mgmtsystem_standards.group_standard_reviewer"
+                            invisible="state != 'testing'"/>
+                    <button name="action_mark_ineffective" string="Mark Ineffective" type="object"
+                            class="btn-warning"
+                            groups="mgmtsystem_standards.group_standard_reviewer"
+                            invisible="state not in ['testing', 'implemented', 'verified']"/>
+                    <button name="action_retire" string="Retire" type="object"
+                            class="btn-danger"
+                            groups="mgmtsystem_standards.group_standard_manager"
+                            invisible="state == 'retired'"/>
                     <group name="Standard Status">
                     <field name="state" widget="statusbar" 
-                           statusbar_visible="draft,review,approved,implementing,implemented,verified"/>
+                           statusbar_visible="draft,review,approved,implementing,implemented,testing,verified"/>
                     </group>
                 </header>
                 <sheet>

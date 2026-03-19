@@ -684,7 +684,7 @@ class StandardControl(models.Model):
     def action_mark_verified(self):
         """Mark control as verified after successful testing"""
         self.ensure_one()
-        if not self.env.user.has_group('mgmtsystem_standard_event.group_standard_reviewer'):
+        if not self.env.user.has_group('mgmtsystem_standards.group_standard_reviewer'):
             raise AccessError(_('Only reviewers can verify controls.'))
         if not self.last_test_date or self.last_test_date < fields.Date.today() - timedelta(days=30):
             raise ValidationError(_('A recent test (within 30 days) is required before verification.'))
@@ -697,7 +697,7 @@ class StandardControl(models.Model):
     def action_mark_ineffective(self):
         """Mark control as ineffective and create improvement action"""
         self.ensure_one()
-        if not self.env.user.has_group('mgmtsystem_standard_event.group_standard_reviewer'):
+        if not self.env.user.has_group('mgmtsystem_standards.group_standard_reviewer'):
             raise AccessError(_('Only reviewers can mark controls as ineffective.'))
         self.write({'state': 'ineffective'})
         

@@ -56,7 +56,7 @@
                         <page string="📋 Description" name="description">
                             <field name="description" placeholder="Add detailed description here..."/>
                         </page>
-                        <page string="🏗️ Standard domains" invisible="not domain_ids">
+                        <page string="🏗️ Standard domains">
                             <field name="domain_ids" domain="[('parent_id', '=', 0)]" >
                                 <list>
                                     <!-- <field name="sequence" widget="handle"/> -->
