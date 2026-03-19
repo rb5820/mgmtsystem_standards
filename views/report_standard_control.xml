@@ -38,7 +38,7 @@
                     <p><strong>Approved By:</strong> <span t-esc="control.approver_id.name"/></p>
                     <p><strong>Verified By:</strong> <span t-esc="control.verifier_id.name"/></p>
                     <p><strong>Automated Assessment:</strong> <span t-esc="control.automated_assessment"/></p>
-                    <p><strong>Assessment Tool:</strong> <span t-esc="control.assessment_tool"/></p>
+                    <p><strong>Assessment Tool:</strong> <span t-esc="control.assessment_tools"/></p>
                     <p><strong>Last Automated Check:</strong> <span t-esc="control.last_automated_check"/></p>
                     <p><strong>Automated Check Result:</strong> <span t-esc="control.automated_check_result"/></p>
                     <p><strong>Additional Information:</strong> <span t-esc="control.additional_information"/></p>
